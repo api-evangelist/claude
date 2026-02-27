@@ -1,0 +1,52 @@
+name: Claude API
+description: Anthropic's Claude AI assistant API for natural language processing and conversation
+image: https://www.anthropic.com/images/icons/anthropic-icon.png
+url: https://www.anthropic.com
+created: '2024'
+modified: '2024'
+apis:
+- name: Claude Messages API
+  description: Primary API for sending messages to Claude and receiving responses
+  image: https://www.anthropic.com/images/icons/anthropic-icon.png
+  humanURL: https://docs.anthropic.com/claude/reference/messages_post
+  baseURL: https://api.anthropic.com/v1
+  tags:
+  - AI
+  - Natural Language Processing
+  - Conversational AI
+  - Large Language Models
+  properties:
+  - type: Documentation
+    url: https://docs.anthropic.com/claude/reference/getting-started-with-the-api
+  - type: OpenAPI
+    url: https://docs.anthropic.com/claude/reference/openapi-spec
+  - type: Authentication
+    url: https://docs.anthropic.com/claude/reference/authentication
+  - type: Pricing
+    url: https://www.anthropic.com/pricing
+  - type: Rate Limits
+    url: https://docs.anthropic.com/claude/reference/rate-limits
+  contact:
+  - type: Support
+    url: https://support.anthropic.com
+  - type: Email
+    url: mailto:support@anthropic.com
+  endpoints:
+  - name: Create Message
+    method: POST
+    path: /messages
+    description: Send a message to Claude and receive a response
+  - name: Stream Message
+    method: POST
+    path: /messages
+    description: Stream a message response from Claude using server-sent events
+maintainers:
+- name: Anthropic
+  email: support@anthropic.com
+  url: https://www.anthropic.com
+tags:
+- artificial intelligence
+- conversational AI
+- natural language processing
+- machine learning
+- chatbot
