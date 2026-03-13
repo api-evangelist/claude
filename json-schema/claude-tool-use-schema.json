@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.anthropic.com/schemas/claude-tool-use-schema.json",
+  "title": "Claude Tool Use",
+  "description": "Schema for Anthropic Claude tool use system including tool definitions, tool use blocks, tool results, and server-provided tools for agentic workflows.",
+  "type": "object",
+  "$defs": {
+    "ToolDefinition": {
+      "type": "object",
+      "title": "Tool Definition",
+      "description": "A custom tool definition that can be provided to Claude for function calling. Tools enable Claude to interact with external systems and perform actions.",
+      "required": ["name", "input_schema"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the tool. Must be unique within the tools array and match the pattern ^[a-zA-Z0-9_-]{1,64}$.",
+          "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+          "minLength": 1,
+          "maxLength": 64,
+          "examples": ["get_stock_price", "get_weather", "search_database", "send_email"]
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed plain-language description of what the tool does, when it should be used, what each parameter means, and any important caveats. More detail leads to better tool use by the model."
+        },
+        "input_schema": {
+          "$ref": "#/$defs/ToolInputSchema"
+        },
+        "cache_control": {
+          "$ref": "#/$defs/CacheControl"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ToolInputSchema": {
+      "type": "object",
+      "title": "Tool Input Schema",
+      "description": "A JSON Schema object defining the expected input parameters for the tool. Must be of type 'object'.",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The schema type. Must be 'object' for tool input schemas.",
+          "const": "object"
+        },
+        "properties": {
+          "type": "object",
+          "description": "An object where each key is a parameter name and the value is a JSON Schema describing that parameter.",
+          "additionalProperties": {
+            "$ref": "#/$defs/ToolInputProperty"
+          }
+        },
+        "required": {
+          "type": "array",
+          "description": "List of parameter names that are required for this tool.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "boolean",
+          "description": "Whether additional properties beyond those defined are allowed."
+        }
+      },
+      "additionalProperties": false
+    },
+    "ToolInputProperty": {
+      "type": "object",
+      "title": "Tool Input Property",
+      "description": "JSON Schema for a single tool input parameter.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The JSON Schema type of this parameter.",
+          "enum": ["string", "number", "integer", "boolean", "array", "object", "null"]
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of what this parameter represents."
+        },
+        "enum": {
+          "type": "array",
+          "description": "A list of allowed values for this parameter.",
+          "items": {}
+        },
+        "items": {
+          "type": "object",
+          "description": "Schema for array items, when type is 'array'.",
+          "additionalProperties": true
+        },
+        "properties": {
+          "type": "object",
+          "description": "Properties of a nested object, when type is 'object'.",
+          "additionalProperties": true
+        },
+        "required": {
+          "type": "array",
+          "description": "Required properties for a nested object.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "default": {
+          "description": "Default value for this parameter."
+        },
+        "minimum": {
+          "type": "number",
+          "description": "Minimum value for numeric types."
+        },
+        "maximum": {
+          "type": "number",
+          "description": "Maximum value for numeric types."
+        },
+        "minLength": {
+          "type": "integer",
+          "description": "Minimum length for string types."
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "Maximum length for string types."
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regex pattern for string types."
+        },
+        "format": {
+          "type": "string",
+          "description": "Format hint for string types (e.g., 'date-time', 'email', 'uri')."
+        }
+      },
+      "additionalProperties": true
+    },
+    "ToolChoice": {
+      "type": "object",
+      "title": "Tool Choice",
+      "description": "Controls how Claude uses the provided tools. Determines whether tool use is automatic, forced, or disabled.",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The tool choice strategy. 'auto' lets Claude decide, 'any' requires at least one tool call, 'tool' forces a specific tool, 'none' prevents tool use.",
+          "enum": ["auto", "any", "tool", "none"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the specific tool to force. Required when type is 'tool'."
+        },
+        "disable_parallel_tool_use": {
+          "type": "boolean",
+          "description": "When true, Claude will only use one tool at a time rather than making parallel tool calls."
+        }
+      },
+      "if": {
+        "properties": {
+          "type": { "const": "tool" }
+        }
+      },
+      "then": {
+        "required": ["type", "name"]
+      },
+      "additionalProperties": false
+    },
+    "ToolUseBlock": {
+      "type": "object",
+      "title": "Tool Use Block",
+      "description": "A content block in Claude's response indicating that it wants to invoke a tool. The id must be passed back in the corresponding tool_result block.",
+      "required": ["type", "id", "name", "input"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The content block type. Always 'tool_use' for tool invocations.",
+          "const": "tool_use"
+        },
+        "id": {
+          "type": "string",
+          "description": "A unique identifier for this tool use block. Must be passed back in the tool_result to match the result to this invocation.",
+          "pattern": "^toolu_",
+          "examples": ["toolu_01D7FLrfh4GYq7yT1ULFeyMV"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the tool being invoked. Matches one of the tool names provided in the request.",
+          "pattern": "^[a-zA-Z0-9_-]{1,64}$"
+        },
+        "input": {
+          "type": "object",
+          "description": "The input arguments for the tool, conforming to the tool's input_schema.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "ToolResultBlockParam": {
+      "type": "object",
+      "title": "Tool Result Block Parameter",
+      "description": "A content block providing the result of a tool invocation back to Claude. Must reference the tool_use_id from the corresponding ToolUseBlock.",
+      "required": ["type", "tool_use_id"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The content block type. Always 'tool_result'.",
+          "const": "tool_result"
+        },
+        "tool_use_id": {
+          "type": "string",
+          "description": "The id from the ToolUseBlock that this result corresponds to.",
+          "pattern": "^toolu_"
+        },
+        "content": {
+          "description": "The result of the tool call. Can be a simple string or an array of content blocks for richer results including images.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  { "$ref": "#/$defs/TextContentBlock" },
+                  { "$ref": "#/$defs/ImageContentBlock" }
+                ]
+              }
+            }
+          ]
+        },
+        "is_error": {
+          "type": "boolean",
+          "description": "Set to true if the tool execution resulted in an error. Claude will use this to understand what went wrong and potentially retry or adjust its approach.",
+          "default": false
+        },
+        "cache_control": {
+          "$ref": "#/$defs/CacheControl"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TextContentBlock": {
+      "type": "object",
+      "title": "Text Content Block",
+      "description": "A text content block used within tool results.",
+      "required": ["type", "text"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "text"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ImageContentBlock": {
+      "type": "object",
+      "title": "Image Content Block",
+      "description": "An image content block used within tool results.",
+      "required": ["type", "source"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "image"
+        },
+        "source": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["base64", "url"]
+            },
+            "media_type": {
+              "type": "string",
+              "enum": ["image/jpeg", "image/png", "image/gif", "image/webp"]
+            },
+            "data": {
+              "type": "string",
+              "description": "Base64-encoded image data."
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL of the image."
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ServerTool": {
+      "type": "object",
+      "title": "Server Tool",
+      "description": "A server-provided tool that Anthropic hosts and executes. These tools do not require client-side implementation.",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The server tool type identifier.",
+          "enum": [
+            "web_search_20260209",
+            "web_fetch_20260209",
+            "code_execution_20260120",
+            "bash_20250124",
+            "text_editor_20250728",
+            "memory_20250818"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name for the server tool.",
+          "enum": ["web_search", "web_fetch", "code_execution", "bash", "str_replace_editor", "memory"]
+        },
+        "max_uses": {
+          "type": "integer",
+          "description": "Maximum number of times this tool can be used in a single request.",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "ToolUseConversationTurn": {
+      "type": "object",
+      "title": "Tool Use Conversation Turn",
+      "description": "A complete tool use conversation pattern showing the request-response cycle: (1) user sends a message, (2) Claude responds with tool_use, (3) user sends tool_result, (4) Claude provides final answer.",
+      "properties": {
+        "initial_request": {
+          "type": "object",
+          "description": "The initial user message that triggers tool use.",
+          "properties": {
+            "role": {
+              "type": "string",
+              "const": "user"
+            },
+            "content": {
+              "type": "string"
+            }
+          }
+        },
+        "tool_use_response": {
+          "type": "object",
+          "description": "Claude's response containing a tool_use block.",
+          "properties": {
+            "role": {
+              "type": "string",
+              "const": "assistant"
+            },
+            "content": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolUseBlock"
+              }
+            },
+            "stop_reason": {
+              "type": "string",
+              "const": "tool_use"
+            }
+          }
+        },
+        "tool_result_message": {
+          "type": "object",
+          "description": "The user message containing the tool result.",
+          "properties": {
+            "role": {
+              "type": "string",
+              "const": "user"
+            },
+            "content": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ToolResultBlockParam"
+              }
+            }
+          }
+        },
+        "final_response": {
+          "type": "object",
+          "description": "Claude's final response incorporating the tool result.",
+          "properties": {
+            "role": {
+              "type": "string",
+              "const": "assistant"
+            },
+            "content": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/TextContentBlock"
+              }
+            },
+            "stop_reason": {
+              "type": "string",
+              "const": "end_turn"
+            }
+          }
+        }
+      }
+    },
+    "CacheControl": {
+      "type": "object",
+      "title": "Cache Control",
+      "description": "Cache control settings for prompt caching.",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "ephemeral"
+        },
+        "ttl": {
+          "type": "string",
+          "description": "Time-to-live for the cache entry.",
+          "enum": ["5m", "1h"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/ToolDefinition" },
+    { "$ref": "#/$defs/ToolUseBlock" },
+    { "$ref": "#/$defs/ToolResultBlockParam" },
+    { "$ref": "#/$defs/ServerTool" }
+  ]
+}

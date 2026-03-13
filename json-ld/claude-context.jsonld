@@ -1,0 +1,446 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "anthropic": "https://api.anthropic.com/v1/",
+    "claude": "https://api.anthropic.com/v1/schemas/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Message": {
+      "@id": "claude:Message",
+      "@context": {
+        "id": {
+          "@id": "claude:messageId",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "claude:objectType",
+          "@type": "xsd:string"
+        },
+        "role": {
+          "@id": "claude:role",
+          "@type": "xsd:string"
+        },
+        "content": {
+          "@id": "claude:content",
+          "@container": "@list"
+        },
+        "model": {
+          "@id": "claude:model",
+          "@type": "xsd:string"
+        },
+        "stop_reason": {
+          "@id": "claude:stopReason",
+          "@type": "xsd:string"
+        },
+        "stop_sequence": {
+          "@id": "claude:stopSequence",
+          "@type": "xsd:string"
+        },
+        "usage": {
+          "@id": "claude:usage",
+          "@type": "claude:Usage"
+        }
+      }
+    },
+
+    "CreateMessageRequest": {
+      "@id": "claude:CreateMessageRequest",
+      "@context": {
+        "model": {
+          "@id": "claude:model",
+          "@type": "xsd:string"
+        },
+        "max_tokens": {
+          "@id": "claude:maxTokens",
+          "@type": "xsd:integer"
+        },
+        "messages": {
+          "@id": "claude:messages",
+          "@container": "@list"
+        },
+        "system": {
+          "@id": "claude:systemPrompt"
+        },
+        "temperature": {
+          "@id": "claude:temperature",
+          "@type": "xsd:decimal"
+        },
+        "top_p": {
+          "@id": "claude:topP",
+          "@type": "xsd:decimal"
+        },
+        "top_k": {
+          "@id": "claude:topK",
+          "@type": "xsd:integer"
+        },
+        "stop_sequences": {
+          "@id": "claude:stopSequences",
+          "@container": "@list"
+        },
+        "stream": {
+          "@id": "claude:stream",
+          "@type": "xsd:boolean"
+        },
+        "metadata": {
+          "@id": "claude:metadata",
+          "@type": "claude:Metadata"
+        },
+        "tools": {
+          "@id": "claude:tools",
+          "@container": "@list"
+        },
+        "tool_choice": {
+          "@id": "claude:toolChoice",
+          "@type": "claude:ToolChoice"
+        },
+        "thinking": {
+          "@id": "claude:thinking",
+          "@type": "claude:ThinkingConfig"
+        },
+        "service_tier": {
+          "@id": "claude:serviceTier",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "MessageParam": {
+      "@id": "claude:MessageParam",
+      "@context": {
+        "role": {
+          "@id": "claude:role",
+          "@type": "xsd:string"
+        },
+        "content": {
+          "@id": "claude:content"
+        }
+      }
+    },
+
+    "TextBlock": {
+      "@id": "claude:TextBlock",
+      "@context": {
+        "type": {
+          "@id": "claude:blockType",
+          "@type": "xsd:string"
+        },
+        "text": {
+          "@id": "claude:text",
+          "@type": "xsd:string"
+        },
+        "citations": {
+          "@id": "claude:citations",
+          "@container": "@list"
+        }
+      }
+    },
+
+    "ImageBlock": {
+      "@id": "claude:ImageBlock",
+      "@context": {
+        "type": {
+          "@id": "claude:blockType",
+          "@type": "xsd:string"
+        },
+        "source": {
+          "@id": "claude:imageSource",
+          "@type": "claude:ImageSource"
+        }
+      }
+    },
+
+    "ImageSource": {
+      "@id": "claude:ImageSource",
+      "@context": {
+        "type": {
+          "@id": "claude:sourceType",
+          "@type": "xsd:string"
+        },
+        "media_type": {
+          "@id": "claude:mediaType",
+          "@type": "xsd:string"
+        },
+        "data": {
+          "@id": "claude:base64Data",
+          "@type": "xsd:base64Binary"
+        },
+        "url": {
+          "@id": "claude:sourceUrl",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "DocumentBlock": {
+      "@id": "claude:DocumentBlock",
+      "@context": {
+        "type": {
+          "@id": "claude:blockType",
+          "@type": "xsd:string"
+        },
+        "source": {
+          "@id": "claude:documentSource",
+          "@type": "claude:DocumentSource"
+        },
+        "title": {
+          "@id": "dcterms:title",
+          "@type": "xsd:string"
+        },
+        "context": {
+          "@id": "claude:documentContext",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ToolUseBlock": {
+      "@id": "claude:ToolUseBlock",
+      "@context": {
+        "type": {
+          "@id": "claude:blockType",
+          "@type": "xsd:string"
+        },
+        "id": {
+          "@id": "claude:toolUseId",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "claude:toolName",
+          "@type": "xsd:string"
+        },
+        "input": {
+          "@id": "claude:toolInput"
+        }
+      }
+    },
+
+    "ToolResultBlock": {
+      "@id": "claude:ToolResultBlock",
+      "@context": {
+        "type": {
+          "@id": "claude:blockType",
+          "@type": "xsd:string"
+        },
+        "tool_use_id": {
+          "@id": "claude:toolUseId",
+          "@type": "xsd:string"
+        },
+        "content": {
+          "@id": "claude:toolResultContent"
+        },
+        "is_error": {
+          "@id": "claude:isError",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "ThinkingBlock": {
+      "@id": "claude:ThinkingBlock",
+      "@context": {
+        "type": {
+          "@id": "claude:blockType",
+          "@type": "xsd:string"
+        },
+        "thinking": {
+          "@id": "claude:thinkingText",
+          "@type": "xsd:string"
+        },
+        "signature": {
+          "@id": "claude:thinkingSignature",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ToolDefinition": {
+      "@id": "claude:ToolDefinition",
+      "@context": {
+        "name": {
+          "@id": "claude:toolName",
+          "@type": "xsd:string"
+        },
+        "description": {
+          "@id": "dcterms:description",
+          "@type": "xsd:string"
+        },
+        "input_schema": {
+          "@id": "claude:inputSchema"
+        },
+        "type": {
+          "@id": "claude:toolType",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ToolChoice": {
+      "@id": "claude:ToolChoice",
+      "@context": {
+        "type": {
+          "@id": "claude:choiceType",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "claude:toolName",
+          "@type": "xsd:string"
+        },
+        "disable_parallel_tool_use": {
+          "@id": "claude:disableParallelToolUse",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+
+    "Usage": {
+      "@id": "claude:Usage",
+      "@context": {
+        "input_tokens": {
+          "@id": "claude:inputTokens",
+          "@type": "xsd:integer"
+        },
+        "output_tokens": {
+          "@id": "claude:outputTokens",
+          "@type": "xsd:integer"
+        },
+        "cache_creation_input_tokens": {
+          "@id": "claude:cacheCreationInputTokens",
+          "@type": "xsd:integer"
+        },
+        "cache_read_input_tokens": {
+          "@id": "claude:cacheReadInputTokens",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "Metadata": {
+      "@id": "claude:Metadata",
+      "@context": {
+        "user_id": {
+          "@id": "claude:userId",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ThinkingConfig": {
+      "@id": "claude:ThinkingConfig",
+      "@context": {
+        "type": {
+          "@id": "claude:thinkingType",
+          "@type": "xsd:string"
+        },
+        "budget_tokens": {
+          "@id": "claude:budgetTokens",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "CacheControl": {
+      "@id": "claude:CacheControl",
+      "@context": {
+        "type": {
+          "@id": "claude:cacheType",
+          "@type": "xsd:string"
+        },
+        "ttl": {
+          "@id": "claude:ttl",
+          "@type": "xsd:string"
+        }
+      }
+    },
+
+    "ModelInfo": {
+      "@id": "claude:ModelInfo",
+      "@context": {
+        "id": {
+          "@id": "claude:modelId",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "claude:objectType",
+          "@type": "xsd:string"
+        },
+        "display_name": {
+          "@id": "claude:displayName",
+          "@type": "xsd:string"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "MessageBatch": {
+      "@id": "claude:MessageBatch",
+      "@context": {
+        "id": {
+          "@id": "claude:batchId",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "claude:objectType",
+          "@type": "xsd:string"
+        },
+        "processing_status": {
+          "@id": "claude:processingStatus",
+          "@type": "xsd:string"
+        },
+        "request_counts": {
+          "@id": "claude:requestCounts",
+          "@type": "claude:RequestCounts"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "ended_at": {
+          "@id": "claude:endedAt",
+          "@type": "xsd:dateTime"
+        },
+        "expires_at": {
+          "@id": "claude:expiresAt",
+          "@type": "xsd:dateTime"
+        },
+        "results_url": {
+          "@id": "claude:resultsUrl",
+          "@type": "@id"
+        }
+      }
+    },
+
+    "Error": {
+      "@id": "claude:Error",
+      "@context": {
+        "type": {
+          "@id": "claude:objectType",
+          "@type": "xsd:string"
+        },
+        "error": {
+          "@id": "claude:errorDetail",
+          "@type": "claude:ErrorDetail"
+        }
+      }
+    },
+
+    "ErrorDetail": {
+      "@id": "claude:ErrorDetail",
+      "@context": {
+        "type": {
+          "@id": "claude:errorType",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "claude:errorMessage",
+          "@type": "xsd:string"
+        }
+      }
+    }
+  }
+}
