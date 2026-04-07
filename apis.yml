@@ -6,13 +6,13 @@ url: https://www.anthropic.com
 created: '2024'
 modified: '2026-03-03'
 tags:
-  - artificial intelligence
-  - conversational AI
-  - natural language processing
-  - machine learning
-  - chatbot
-  - large language models
-  - generative AI
+  - Artificial Intelligence
+  - Chatbot
+  - Conversational AI
+  - Generative AI
+  - Large Language Models
+  - Machine Learning
+  - Natural Language Processing
 apis:
   - name: Claude Messages API
     description: >-
@@ -22,9 +22,9 @@ apis:
     baseURL: https://api.anthropic.com/v1
     tags:
       - AI
-      - Natural Language Processing
       - Conversational AI
       - Large Language Models
+      - Natural Language Processing
     properties:
       - type: Documentation
         url: https://docs.anthropic.com/en/api/messages
@@ -69,13 +69,11 @@ apis:
       - name: Stream Message
         method: POST
         path: /messages
-        description: Stream a message response from Claude using server-sent 
-          events
+        description: Stream a message response from Claude using server-sent events
       - name: Count Message Tokens
         method: POST
         path: /messages/count_tokens
-        description: Count the number of tokens in a message including tools 
-          images and documents without creating it
+        description: Count the number of tokens in a message including tools images and documents without creating it
   - name: Claude Message Batches API
     description: >-
       API for asynchronously processing large volumes of message requests at reduced
@@ -85,8 +83,8 @@ apis:
     baseURL: https://api.anthropic.com/v1
     tags:
       - AI
-      - Batch Processing
       - Asynchronous
+      - Batch Processing
       - Large Language Models
     properties:
       - type: Documentation
@@ -98,8 +96,7 @@ apis:
       - type: JSON-LD Context
         url: json-ld/claude-context.jsonld
       - type: Batch Processing Guide
-        url: 
-          https://docs.anthropic.com/en/docs/build-with-claude/batch-processing
+        url: https://docs.anthropic.com/en/docs/build-with-claude/batch-processing
     contact:
       - type: Support
         url: https://support.anthropic.com
@@ -109,8 +106,7 @@ apis:
       - name: Create Message Batch
         method: POST
         path: /messages/batches
-        description: Create a batch of message requests for asynchronous 
-          processing
+        description: Create a batch of message requests for asynchronous processing
       - name: List Message Batches
         method: GET
         path: /messages/batches
@@ -122,8 +118,7 @@ apis:
       - name: Retrieve Message Batch Results
         method: GET
         path: /messages/batches/{message_batch_id}/results
-        description: Stream the results of a completed message batch as a JSONL 
-          file
+        description: Stream the results of a completed message batch as a JSONL file
       - name: Cancel Message Batch
         method: POST
         path: /messages/batches/{message_batch_id}/cancel
@@ -141,8 +136,8 @@ apis:
     baseURL: https://api.anthropic.com/v1
     tags:
       - AI
-      - Models
       - Large Language Models
+      - Models
     properties:
       - type: Documentation
         url: https://docs.anthropic.com/en/api/models-list
@@ -175,9 +170,9 @@ apis:
     baseURL: https://api.anthropic.com/v1
     tags:
       - AI
-      - Files
       - Document Processing
       - File Management
+      - Files
     properties:
       - type: Documentation
         url: https://docs.anthropic.com/en/docs/build-with-claude/files
@@ -206,8 +201,7 @@ apis:
       - name: Download File
         method: GET
         path: /files/{file_id}/content
-        description: Download file content created by skills or the code 
-          execution tool
+        description: Download file content created by skills or the code execution tool
       - name: Delete File
         method: DELETE
         path: /files/{file_id}
@@ -220,10 +214,10 @@ apis:
     humanURL: https://docs.anthropic.com/en/api/administration-api
     baseURL: https://api.anthropic.com/v1
     tags:
-      - AI
       - Administration
-      - Organization Management
+      - AI
       - API Keys
+      - Organization Management
       - Workspaces
     properties:
       - type: Documentation
@@ -231,13 +225,11 @@ apis:
       - type: List API Keys Reference
         url: https://docs.anthropic.com/en/api/admin-api/apikeys/list-api-keys
       - type: List Workspaces Reference
-        url: 
-          https://docs.anthropic.com/en/api/admin-api/workspaces/list-workspaces
+        url: https://docs.anthropic.com/en/api/admin-api/workspaces/list-workspaces
       - type: List Invites Reference
         url: https://docs.anthropic.com/en/api/admin-api/invites/list-invites
       - type: List Organization Members Reference
-        url: 
-          https://docs.anthropic.com/en/api/admin-api/workspace_members/list-workspace-members
+        url: https://docs.anthropic.com/en/api/admin-api/workspace_members/list-workspace-members
     contact:
       - type: Support
         url: https://support.anthropic.com
@@ -313,9 +305,9 @@ apis:
     baseURL: https://api.anthropic.com/v1
     tags:
       - AI
-      - Usage
-      - Cost Tracking
       - Analytics
+      - Cost Tracking
+      - Usage
     properties:
       - type: Documentation
         url: https://docs.anthropic.com/en/api/usage-cost-api
@@ -328,13 +320,11 @@ apis:
       - name: Get Usage Report
         method: GET
         path: /organizations/usage_report/messages
-        description: Retrieve token usage report with breakdowns by model 
-          workspace and service tier
+        description: Retrieve token usage report with breakdowns by model workspace and service tier
       - name: Get Cost Report
         method: GET
         path: /organizations/cost_report
-        description: Retrieve service-level cost breakdowns in USD including 
-          token usage web search and code execution costs
+        description: Retrieve service-level cost breakdowns in USD including token usage web search and code execution costs
   - name: Claude Text Completions API
     description: >-
       Legacy API for generating text completions - deprecated in favor of the Messages
@@ -344,9 +334,9 @@ apis:
     baseURL: https://api.anthropic.com/v1
     tags:
       - AI
-      - Text Completion
-      - Legacy
       - Large Language Models
+      - Legacy
+      - Text Completion
     properties:
       - type: Documentation
         url: https://docs.anthropic.com/en/api/complete
@@ -361,8 +351,7 @@ apis:
       - name: Create Text Completion
         method: POST
         path: /complete
-        description: Generate a text completion from Claude (legacy - use 
-          Messages API instead)
+        description: Generate a text completion from Claude (legacy - use Messages API instead)
 common:
   - type: Portal
     url: https://console.anthropic.com
