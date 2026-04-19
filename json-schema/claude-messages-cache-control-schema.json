@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CacheControl",
+  "type": "object",
+  "description": "Cache control settings for prompt caching.",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "ttl": {
+      "type": "string",
+      "description": "Time-to-live for the cache entry."
+    }
+  }
+}

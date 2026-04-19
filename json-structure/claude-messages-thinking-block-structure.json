@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ThinkingBlock",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "thinking": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool",
+  "type": "object",
+  "description": "Definition of a tool that the model can use.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the tool. Must match the regex ^[a-zA-Z0-9_-]{1,64}$."
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed description of what the tool does, when it should be used, and what each parameter means."
+    },
+    "input_schema": {
+      "type": "object",
+      "description": "JSON Schema object defining the expected parameters for the tool."
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of tool. Omit for custom tools. Use specific type strings for server tools like web_search_20260209, code_execution_20260120, text_editor_20250728, etc."
+    }
+  }
+}

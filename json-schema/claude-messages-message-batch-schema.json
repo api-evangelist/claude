@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MessageBatch",
+  "type": "object",
+  "description": "A message batch object representing an asynchronous batch of message requests.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the message batch."
+    },
+    "type": {
+      "type": "string",
+      "description": "Object type. Always \"message_batch\"."
+    },
+    "processing_status": {
+      "type": "string",
+      "description": "The processing status of the batch."
+    },
+    "request_counts": {
+      "type": "object",
+      "description": "Tallies of requests by their status within the batch."
+    },
+    "ended_at": {
+      "type": "string",
+      "description": "RFC 3339 datetime when the batch ended processing."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "RFC 3339 datetime when the batch was created."
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "RFC 3339 datetime when the batch results will expire."
+    },
+    "results_url": {
+      "type": "string",
+      "description": "URL to retrieve the batch results. Available when the batch is complete."
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "MessageBatch",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "processing_status": {
+      "type": "string"
+    },
+    "request_counts": {
+      "type": "object"
+    },
+    "ended_at": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "expires_at": {
+      "type": "string"
+    },
+    "results_url": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateMessageRequest",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "The model that will complete your prompt. See the list of available models."
+    },
+    "max_tokens": {
+      "type": "integer",
+      "description": "The maximum number of tokens to generate before stopping. Different models support different maximum values."
+    },
+    "messages": {
+      "type": "array",
+      "description": "Input messages. Alternating user and assistant conversational turns. Maximum 100,000 messages per request."
+    },
+    "system": {
+      "type": "string",
+      "description": "System prompt providing context and instructions to Claude. Can be a string or array of content blocks."
+    },
+    "temperature": {
+      "type": "number",
+      "description": "Amount of randomness injected into the response. Ranges from 0.0 to 1.0. Use closer to 0.0 for analytical tasks, closer to 1.0 for creative tasks."
+    },
+    "top_p": {
+      "type": "number",
+      "description": "Use nucleus sampling. Recommended to use either temperature or top_p, but not both."
+    },
+    "top_k": {
+      "type": "integer",
+      "description": "Only sample from the top K options for each subsequent token."
+    },
+    "stop_sequences": {
+      "type": "array",
+      "description": "Custom text sequences that will cause the model to stop generating."
+    },
+    "stream": {
+      "type": "boolean",
+      "description": "Whether to incrementally stream the response using server-sent events."
+    },
+    "tools": {
+      "type": "array",
+      "description": "Definitions of tools that the model may use."
+    },
+    "service_tier": {
+      "type": "string",
+      "description": "Service tier to use for this request."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ToolResultBlockParam",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "tool_use_id": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "is_error": {
+      "type": "boolean"
+    }
+  }
+}

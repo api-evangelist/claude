@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ThinkingBlockParam",
+  "type": "object",
+  "description": "A thinking content block in a request (for multi-turn with extended thinking).",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "thinking": {
+      "type": "string",
+      "description": "The thinking text from a previous response."
+    },
+    "signature": {
+      "type": "string",
+      "description": "The signature from the previous thinking block."
+    }
+  }
+}

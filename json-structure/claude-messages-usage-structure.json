@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Usage",
+  "type": "object",
+  "properties": {
+    "input_tokens": {
+      "type": "integer"
+    },
+    "output_tokens": {
+      "type": "integer"
+    },
+    "cache_creation_input_tokens": {
+      "type": "integer"
+    },
+    "cache_read_input_tokens": {
+      "type": "integer"
+    }
+  }
+}

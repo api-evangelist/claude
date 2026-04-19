@@ -1,0 +1,9 @@
+{
+  "id": "abc123",
+  "type": "example_value",
+  "role": "example_value",
+  "content": [],
+  "model": "example_value",
+  "stop_reason": "example_value",
+  "stop_sequence": "example_value"
+}

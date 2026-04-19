@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ThinkingConfig",
+  "type": "object",
+  "description": "Configuration for extended thinking.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Whether thinking is enabled, disabled, or adaptive."
+    },
+    "budget_tokens": {
+      "type": "integer",
+      "description": "Maximum number of tokens for thinking. Minimum 1024 and must be less than max_tokens."
+    }
+  }
+}

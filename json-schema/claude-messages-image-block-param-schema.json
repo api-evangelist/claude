@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ImageBlockParam",
+  "type": "object",
+  "description": "An image content block. Supports base64-encoded or URL-referenced images.",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "description": "The source of the image."
+    }
+  }
+}

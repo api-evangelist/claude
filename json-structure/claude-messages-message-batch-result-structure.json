@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "MessageBatchResult",
+  "type": "object",
+  "properties": {
+    "custom_id": {
+      "type": "string"
+    },
+    "result": {
+      "type": "object"
+    }
+  }
+}

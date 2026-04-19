@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CountTokensRequest",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "The model to use for token counting."
+    },
+    "messages": {
+      "type": "array",
+      "description": "Input messages to count tokens for."
+    },
+    "system": {
+      "type": "string",
+      "description": "System prompt to include in the token count."
+    },
+    "tools": {
+      "type": "array",
+      "description": "Tool definitions to include in the token count."
+    }
+  }
+}

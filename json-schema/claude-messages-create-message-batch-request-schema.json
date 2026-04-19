@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateMessageBatchRequest",
+  "type": "object",
+  "properties": {
+    "requests": {
+      "type": "array",
+      "description": "Array of batch request objects. Each contains a custom_id and params."
+    }
+  }
+}

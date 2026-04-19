@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "DocumentBlockParam",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object"
+    },
+    "title": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string"
+    },
+    "citations": {
+      "type": "object"
+    }
+  }
+}

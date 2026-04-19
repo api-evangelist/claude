@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchRequestItem",
+  "type": "object",
+  "description": "A single request within a message batch.",
+  "properties": {
+    "custom_id": {
+      "type": "string",
+      "description": "Developer-provided identifier for this request. Must be unique within the batch. Used to match results to requests."
+    }
+  }
+}

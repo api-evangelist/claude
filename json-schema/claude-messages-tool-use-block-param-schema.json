@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ToolUseBlockParam",
+  "type": "object",
+  "description": "A tool use content block in a request (for multi-turn tool use).",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this tool use."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the tool."
+    },
+    "input": {
+      "type": "object",
+      "description": "The input to the tool."
+    }
+  }
+}

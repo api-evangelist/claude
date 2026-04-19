@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DocumentBlockParam",
+  "type": "object",
+  "description": "A document content block for PDFs and text documents.",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "description": "The source of the document."
+    },
+    "title": {
+      "type": "string",
+      "description": "Optional title for the document."
+    },
+    "context": {
+      "type": "string",
+      "description": "Optional context about the document."
+    },
+    "citations": {
+      "type": "object",
+      "description": "Citation configuration for the document."
+    }
+  }
+}

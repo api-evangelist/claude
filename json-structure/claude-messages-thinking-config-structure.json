@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "ThinkingConfig",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "budget_tokens": {
+      "type": "integer"
+    }
+  }
+}

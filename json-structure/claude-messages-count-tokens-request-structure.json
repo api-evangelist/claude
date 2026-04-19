@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "CountTokensRequest",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string"
+    },
+    "messages": {
+      "type": "array"
+    },
+    "system": {
+      "type": "string"
+    },
+    "tools": {
+      "type": "array"
+    }
+  }
+}

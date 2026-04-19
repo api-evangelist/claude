@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ToolResultBlockParam",
+  "type": "object",
+  "description": "A tool result content block, providing the output from a tool invocation.",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "tool_use_id": {
+      "type": "string",
+      "description": "The id of the tool use request this is a result for. Must match a tool_use block id."
+    },
+    "content": {
+      "type": "string",
+      "description": "The result of the tool call. Can be a string or array of content blocks."
+    },
+    "is_error": {
+      "type": "boolean",
+      "description": "Set to true if the tool execution resulted in an error."
+    }
+  }
+}

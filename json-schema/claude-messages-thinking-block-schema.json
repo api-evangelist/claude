@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ThinkingBlock",
+  "type": "object",
+  "description": "A thinking content block showing Claude's internal reasoning process.",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "thinking": {
+      "type": "string",
+      "description": "Claude's internal reasoning text."
+    },
+    "signature": {
+      "type": "string",
+      "description": "A signature verifying the thinking block."
+    }
+  }
+}

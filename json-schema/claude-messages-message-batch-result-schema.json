@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MessageBatchResult",
+  "type": "object",
+  "description": "A single result from a message batch.",
+  "properties": {
+    "custom_id": {
+      "type": "string",
+      "description": "The developer-provided custom_id from the original request."
+    },
+    "result": {
+      "type": "object",
+      "description": "The result of the request."
+    }
+  }
+}

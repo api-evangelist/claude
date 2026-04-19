@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "Message",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "content": {
+      "type": "array"
+    },
+    "model": {
+      "type": "string"
+    },
+    "stop_reason": {
+      "type": "string"
+    },
+    "stop_sequence": {
+      "type": "string"
+    }
+  }
+}

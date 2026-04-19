@@ -1,0 +1,13 @@
+{
+  "model": "example_value",
+  "max_tokens": 10,
+  "messages": [],
+  "system": "example_value",
+  "temperature": 42.5,
+  "top_p": 42.5,
+  "top_k": 10,
+  "stop_sequences": [],
+  "stream": true,
+  "tools": [],
+  "service_tier": "example_value"
+}

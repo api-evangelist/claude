@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-structure.org/draft/2020-12/schema",
+  "name": "CacheControl",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "ttl": {
+      "type": "string"
+    }
+  }
+}

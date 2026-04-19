@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Metadata",
+  "type": "object",
+  "description": "Request metadata for tracking and abuse prevention.",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "An external identifier for the user making the request. Should be a UUID, hash, or other opaque identifier."
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ModelInfo",
+  "type": "object",
+  "description": "Metadata about a Claude model.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique model identifier."
+    },
+    "type": {
+      "type": "string",
+      "description": "Object type. Always \"model\" for model objects."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "A human-readable name for the model."
+    },
+    "created_at": {
+      "type": "string",
+      "description": "RFC 3339 datetime string representing when the model was released."
+    }
+  }
+}

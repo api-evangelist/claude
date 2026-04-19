@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TokenCount",
+  "type": "object",
+  "properties": {
+    "input_tokens": {
+      "type": "integer",
+      "description": "The total number of input tokens in the message."
+    }
+  }
+}
