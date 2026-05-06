@@ -4,169 +4,655 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Claude
 providerId: claude
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
   - Artificial Intelligence
-  - Chatbot
-  - Conversational AI
   - Generative AI
   - Large Language Models
-  - Machine Learning
+  - Conversational AI
   - Natural Language Processing
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+description: >-
+  Claude is offered through two pricing surfaces. Consumer / business plans (Free, Pro, Max, Team,
+  Enterprise) are per-seat monthly subscriptions for the Claude apps. The Claude API is pay-as-you-go
+  per-token usage across the model lineup (Opus 4.x, Sonnet 4.x, Haiku 4.5, plus deprecated 3.x
+  models), with prompt-caching discounts (1.25x or 2x writes; 0.1x cache reads), a 50% Batch API
+  discount, optional 6x Fast Mode (Opus 4.6 only), and a 1.1x US data-residency multiplier on
+  Opus 4.6+ when inference_geo='us'. Web search adds $10 per 1,000 searches; code execution beyond
+  the 1,550-hour monthly free tier is $0.05 per container-hour. Claude Managed Agents add session
+  runtime at $0.08 per session-hour on top of token costs.
+sources:
+  - https://claude.com/pricing
+  - https://platform.claude.com/docs/en/about-claude/pricing
+  - https://platform.claude.com/docs/en/api/rate-limits
 plans:
   - id: claude-free
     name: Free
     type: freemium
-    description: Free entry tier for the Claude API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
+    description: Free tier of the Claude consumer app for individuals.
     entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.anthropic.com/v1
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.anthropic.com/v1
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Claude Messages API
-      - name: Claude Message Batches API
-      - name: Claude Models API
-      - name: Claude Files API
-      - name: Claude Admin API
-      - name: Claude Usage and Cost API
-      - name: Claude Text Completions API
-  - id: claude-pro
-    name: Professional
-    type: paid
-    description: Production tier for Claude. Provides higher quotas, priority support, and access to the
-      broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.anthropic.com/v1
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.anthropic.com/v1
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
+      - label: Per user
+        name: free
+        type: subscription
+        metric: month
         limit: -1
         timeFrame: month
         geo: global
-        domains:
-          - https://api.anthropic.com/v1
-        unit: 1000
-        price: TBD
-        userMultiplied: false
+        unit: 1
+        price: '0.00'
+        userMultiplied: true
     elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Claude Messages API
-      - name: Claude Message Batches API
-      - name: Claude Models API
-      - name: Claude Files API
-      - name: Claude Admin API
-      - name: Claude Usage and Cost API
-      - name: Claude Text Completions API
+      - name: Basic chat
+      - name: Limited usage
+  - id: claude-pro
+    name: Pro
+    type: subscription
+    description: Individual professional plan; $17/month with annual billing or $20/month month-to-month.
+    entries:
+      - label: Per user (annual)
+        name: pro_annual
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '17.00'
+        userMultiplied: true
+      - label: Per user (monthly)
+        name: pro_monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '20.00'
+        userMultiplied: true
+    elements:
+      - name: Higher usage limits
+      - name: Access to latest models
+      - name: Projects
+  - id: claude-max
+    name: Max
+    type: subscription
+    description: Heavier-usage individual plan starting at $100/month with 5x and 20x usage tiers.
+    entries:
+      - label: Max 5x
+        name: max_5x
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '100.00'
+        userMultiplied: true
+      - label: Max 20x
+        name: max_20x
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: from $200/month
+        userMultiplied: true
+    elements:
+      - name: 5x or 20x Pro usage
+      - name: Priority access during peak times
+  - id: claude-team
+    name: Team
+    type: subscription
+    description: Per-seat team plan with Standard and Premium seat options.
+    entries:
+      - label: Standard seat (annual)
+        name: team_standard
+        type: subscription
+        metric: seat
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '20.00'
+        userMultiplied: true
+      - label: Premium seat (annual)
+        name: team_premium
+        type: subscription
+        metric: seat
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '100.00'
+        userMultiplied: true
+    elements:
+      - name: Central admin
+      - name: Shared projects
+      - name: Premium seat includes higher usage allowances
   - id: claude-enterprise
     name: Enterprise
     type: enterprise
-    description: Custom-negotiated tier for Claude. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
+    description: Enterprise plan starting at $20/seat plus negotiated usage costs.
     entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
+      - label: Per seat
+        name: enterprise_seat
+        type: subscription
+        metric: seat
         limit: -1
         timeFrame: month
-        geo: configurable
-        domains:
-          - https://api.anthropic.com/v1
+        geo: global
         unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://api.anthropic.com/v1
+        price: from $20.00
+        userMultiplied: true
+      - label: Negotiated usage
+        name: enterprise_usage
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: year
+        geo: global
         unit: 1
-        price: custom
+        price: contact sales
         userMultiplied: false
     elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Claude Messages API
-      - name: Claude Message Batches API
-      - name: Claude Models API
-      - name: Claude Files API
-      - name: Claude Admin API
-      - name: Claude Usage and Cost API
-      - name: Claude Text Completions API
+      - name: SSO / SCIM
+      - name: Audit logs
+      - name: Custom data retention
+      - name: Dedicated support
+  - id: claude-api-opus-47
+    name: Claude API - Opus 4.7
+    type: usage-based
+    description: Frontier reasoning model at Opus 4.5+ pricing tier ($5 input / $25 output per
+      million tokens).
+    entries:
+      - label: Input tokens
+        name: opus_47_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '5.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: opus_47_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '25.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: opus_47_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.25'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: opus_47_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '10.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: opus_47_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.50'
+        userMultiplied: false
+    elements:
+      - name: 1M-token context window at standard pricing
+      - name: New tokenizer (may use up to ~35% more tokens vs prior models)
+      - name: Prompt caching supported
+      - name: Batch API discount (50%)
+  - id: claude-api-opus-46
+    name: Claude API - Opus 4.6
+    type: usage-based
+    description: Opus 4.6 with optional Fast Mode (6x base rates).
+    entries:
+      - label: Input tokens
+        name: opus_46_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '5.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: opus_46_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '25.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: opus_46_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.25'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: opus_46_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '10.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: opus_46_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.50'
+        userMultiplied: false
+      - label: Fast Mode input (Opus 4.6 only)
+        name: opus_46_fast_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '30.00'
+        userMultiplied: false
+      - label: Fast Mode output (Opus 4.6 only)
+        name: opus_46_fast_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '150.00'
+        userMultiplied: false
+    elements:
+      - name: 1M-token context window at standard pricing
+      - name: Fast Mode (beta) for low-latency output
+      - name: Prompt caching supported
+  - id: claude-api-opus-45
+    name: Claude API - Opus 4.5
+    type: usage-based
+    description: Opus 4.5 at the same per-token rates as Opus 4.6/4.7.
+    entries:
+      - label: Input tokens
+        name: opus_45_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '5.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: opus_45_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '25.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: opus_45_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.25'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: opus_45_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '10.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: opus_45_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.50'
+        userMultiplied: false
+    elements:
+      - name: Prompt caching supported
+      - name: Batch API discount (50%)
+  - id: claude-api-opus-41
+    name: Claude API - Opus 4.1
+    type: usage-based
+    description: Opus 4.1 (legacy pricing).
+    entries:
+      - label: Input tokens
+        name: opus_41_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '15.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: opus_41_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '75.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: opus_41_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '18.75'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: opus_41_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '30.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: opus_41_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.50'
+        userMultiplied: false
+    elements:
+      - name: Prompt caching supported
+      - name: Batch API discount (50%)
+  - id: claude-api-sonnet-46
+    name: Claude API - Sonnet 4.6
+    type: usage-based
+    description: Sonnet 4.6 with 1M-token context at standard pricing.
+    entries:
+      - label: Input tokens
+        name: sonnet_46_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: sonnet_46_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '15.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: sonnet_46_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.75'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: sonnet_46_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: sonnet_46_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.30'
+        userMultiplied: false
+    elements:
+      - name: 1M-token context window
+      - name: Prompt caching supported
+      - name: Batch API discount (50%)
+  - id: claude-api-sonnet-45
+    name: Claude API - Sonnet 4.5
+    type: usage-based
+    description: Sonnet 4.5 at standard Sonnet rates.
+    entries:
+      - label: Input tokens
+        name: sonnet_45_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: sonnet_45_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '15.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: sonnet_45_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.75'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: sonnet_45_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '6.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: sonnet_45_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.30'
+        userMultiplied: false
+    elements:
+      - name: Prompt caching supported
+      - name: Batch API discount (50%)
+  - id: claude-api-haiku-45
+    name: Claude API - Haiku 4.5
+    type: usage-based
+    description: Cost-efficient Haiku 4.5 model.
+    entries:
+      - label: Input tokens
+        name: haiku_45_input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: haiku_45_output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '5.00'
+        userMultiplied: false
+      - label: 5-minute cache write
+        name: haiku_45_cache_5m
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.25'
+        userMultiplied: false
+      - label: 1-hour cache write
+        name: haiku_45_cache_1h
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '2.00'
+        userMultiplied: false
+      - label: Cache read / hit
+        name: haiku_45_cache_read
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.10'
+        userMultiplied: false
+    elements:
+      - name: Prompt caching supported
+      - name: Batch API discount (50%)
+      - name: Lowest-cost frontier-class option
+  - id: claude-api-server-tools
+    name: Claude API - Server Tools and Add-ons
+    type: usage-based
+    description: Server-side tools and Managed Agents that bill separately from token usage.
+    entries:
+      - label: Web search
+        name: web_search
+        type: metered
+        metric: search
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000
+        price: '10.00'
+        userMultiplied: false
+      - label: Web fetch
+        name: web_fetch
+        type: metered
+        metric: request
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Code execution beyond 1,550 free hours
+        name: code_execution
+        type: metered
+        metric: container-hour
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '0.05'
+        userMultiplied: false
+      - label: Managed Agents session runtime
+        name: agent_session
+        type: metered
+        metric: session-hour
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1
+        price: '0.08'
+        userMultiplied: false
+      - label: US data residency multiplier (Opus 4.6+, Sonnet 4.5+)
+        name: us_data_residency
+        type: metered
+        metric: multiplier
+        limit: -1
+        timeFrame: usage
+        geo: US
+        unit: 1
+        price: 1.1x base
+        userMultiplied: false
+    elements:
+      - name: Tool use (auto / any / tool / none)
+      - name: Bash, text-editor, computer-use tools
+      - name: Web search and web fetch server tools
+      - name: Code execution containers
+      - name: Claude Managed Agents
 maintainers:
-  - name: Kin Lane
+  - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com
-  - name: Anthropic
-    email: support@anthropic.com
-    url: https://www.anthropic.com

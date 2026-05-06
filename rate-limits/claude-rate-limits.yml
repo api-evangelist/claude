@@ -4,122 +4,265 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Claude
 providerId: claude
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
   - Artificial Intelligence
-  - Chatbot
-  - Conversational AI
   - Generative AI
   - Large Language Models
-  - Machine Learning
-  - Natural Language Processing
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Claude API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
+description: >-
+  The Claude API enforces organization-level usage tiers (Tier 1-4 plus Monthly Invoicing) that gate
+  monthly spend, plus per-minute rate limits expressed as RPM, ITPM (input tokens per minute), and
+  OTPM (output tokens per minute) per model class. Organizations advance tiers automatically as
+  cumulative credit purchases reach $5 / $40 / $200 / $400 (Tier 1-4); higher limits and Monthly
+  Invoicing are negotiated through sales. Cache reads do not count against ITPM on Claude 4.x models
+  (a key advantage of prompt caching), and the Message Batches API has its own RPM and processing
+  queue caps. Managed Agents endpoints have a separate organization-wide cap (300 RPM creates / 600
+  RPM reads). All limits are enforced via the token-bucket algorithm and surfaced through detailed
+  anthropic-ratelimit-* response headers.
+sources:
+  - https://platform.claude.com/docs/en/api/rate-limits
+  - https://platform.claude.com/docs/en/about-claude/pricing
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  retryAfter: retry-after
+  requestsLimit: anthropic-ratelimit-requests-limit
+  requestsRemaining: anthropic-ratelimit-requests-remaining
+  requestsReset: anthropic-ratelimit-requests-reset
+  inputTokensLimit: anthropic-ratelimit-input-tokens-limit
+  inputTokensRemaining: anthropic-ratelimit-input-tokens-remaining
+  inputTokensReset: anthropic-ratelimit-input-tokens-reset
+  outputTokensLimit: anthropic-ratelimit-output-tokens-limit
+  outputTokensRemaining: anthropic-ratelimit-output-tokens-remaining
+  outputTokensReset: anthropic-ratelimit-output-tokens-reset
+  priorityInputTokensLimit: anthropic-priority-input-tokens-limit
+  priorityOutputTokensLimit: anthropic-priority-output-tokens-limit
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
+  - name: Tier 1 - Opus 4.x RPM
+    scope: organization
     metric: requests_per_minute
-    limit: 10
-    burst: 20
+    limit: 50
     timeFrame: minute
-    applies:
-      - Claude Messages API
-      - Claude Message Batches API
-      - Claude Models API
-      - Claude Files API
-      - Claude Admin API
-      - Claude Usage and Cost API
-      - Claude Text Completions API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Claude Messages API
-      - Claude Message Batches API
-      - Claude Models API
-      - Claude Files API
-      - Claude Admin API
-      - Claude Usage and Cost API
-      - Claude Text Completions API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
+    notes: Opus rate limit is a total across Opus 4.7 / 4.6 / 4.5 / 4.1 / 4.
+  - name: Tier 1 - Opus 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 30000
+    timeFrame: minute
+  - name: Tier 1 - Opus 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 8000
+    timeFrame: minute
+  - name: Tier 1 - Sonnet 4.x RPM
+    scope: organization
     metric: requests_per_minute
+    limit: 50
+    timeFrame: minute
+    notes: Sonnet 4.x rate limit is a total across Sonnet 4.6 / 4.5 / 4.
+  - name: Tier 1 - Sonnet 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 30000
+    timeFrame: minute
+  - name: Tier 1 - Sonnet 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 8000
+    timeFrame: minute
+  - name: Tier 1 - Haiku 4.5 RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 50
+    timeFrame: minute
+  - name: Tier 1 - Haiku 4.5 ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 50000
+    timeFrame: minute
+  - name: Tier 1 - Haiku 4.5 OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 10000
+    timeFrame: minute
+  - name: Tier 2 - Opus 4.x RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 1000
+    timeFrame: minute
+  - name: Tier 2 - Opus 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 450000
+    timeFrame: minute
+  - name: Tier 2 - Opus 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 90000
+    timeFrame: minute
+  - name: Tier 2 - Sonnet 4.x RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 1000
+    timeFrame: minute
+  - name: Tier 2 - Sonnet 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 450000
+    timeFrame: minute
+  - name: Tier 2 - Sonnet 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 90000
+    timeFrame: minute
+  - name: Tier 2 - Haiku 4.5 RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 1000
+    timeFrame: minute
+  - name: Tier 2 - Haiku 4.5 ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 450000
+    timeFrame: minute
+  - name: Tier 2 - Haiku 4.5 OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 90000
+    timeFrame: minute
+  - name: Tier 3 - Opus 4.x RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 2000
+    timeFrame: minute
+  - name: Tier 3 - Opus 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 800000
+    timeFrame: minute
+  - name: Tier 3 - Opus 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 160000
+    timeFrame: minute
+  - name: Tier 3 - Sonnet 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 800000
+    timeFrame: minute
+  - name: Tier 3 - Sonnet 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 160000
+    timeFrame: minute
+  - name: Tier 3 - Haiku 4.5 ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 1000000
+    timeFrame: minute
+  - name: Tier 3 - Haiku 4.5 OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 200000
+    timeFrame: minute
+  - name: Tier 4 - Opus 4.x RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 4000
+    timeFrame: minute
+  - name: Tier 4 - Opus 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 2000000
+    timeFrame: minute
+  - name: Tier 4 - Opus 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 400000
+    timeFrame: minute
+  - name: Tier 4 - Sonnet 4.x ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 2000000
+    timeFrame: minute
+  - name: Tier 4 - Sonnet 4.x OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 400000
+    timeFrame: minute
+  - name: Tier 4 - Haiku 4.5 ITPM
+    scope: organization
+    metric: input_tokens_per_minute
+    limit: 4000000
+    timeFrame: minute
+  - name: Tier 4 - Haiku 4.5 OTPM
+    scope: organization
+    metric: output_tokens_per_minute
+    limit: 800000
+    timeFrame: minute
+  - name: Message Batches API - Tier 1 RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 50
+    timeFrame: minute
+    notes: Shared across all models; max 100,000 batch requests in queue.
+  - name: Message Batches API - Tier 4 RPM
+    scope: organization
+    metric: requests_per_minute
+    limit: 4000
+    timeFrame: minute
+    notes: Max 500,000 batch requests in processing queue at Tier 4.
+  - name: Managed Agents - create endpoints
+    scope: organization
+    metric: requests_per_minute
+    limit: 300
+    timeFrame: minute
+  - name: Managed Agents - read endpoints
+    scope: organization
+    metric: requests_per_minute
+    limit: 600
+    timeFrame: minute
+  - name: Spend limit - Tier 1
+    scope: organization
+    metric: spend_per_month
     limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Claude Messages API
-      - Claude Message Batches API
-      - Claude Models API
-      - Claude Files API
-      - Claude Admin API
-      - Claude Usage and Cost API
-      - Claude Text Completions API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
     timeFrame: month
-    applies:
-      - Claude Messages API
-      - Claude Message Batches API
-      - Claude Models API
-      - Claude Files API
-      - Claude Admin API
-      - Claude Usage and Cost API
-      - Claude Text Completions API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Claude Messages API
-      - Claude Message Batches API
-      - Claude Models API
-      - Claude Files API
-      - Claude Admin API
-      - Claude Usage and Cost API
-      - Claude Text Completions API
+    notes: USD; advance to Tier 2 after $40 cumulative credit purchases.
+  - name: Spend limit - Tier 4
+    scope: organization
+    metric: spend_per_month
+    limit: 200000
+    timeFrame: month
+    notes: USD; Monthly Invoicing removes the cap entirely.
 policies:
+  - name: Token-bucket replenishment
+    description: Capacity is continuously replenished up to the maximum, not reset on fixed
+      intervals. Short bursts above steady-state can still trigger 429 errors.
+  - name: Cache-aware ITPM
+    description: For Claude 4.x models, cache_read_input_tokens do NOT count toward ITPM. Only
+      uncached input_tokens plus cache_creation_input_tokens are charged against the per-minute
+      input limit, making prompt caching an effective lever to increase effective throughput.
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: On 429, honor the retry-after header before retrying. Use exponential backoff with
+      jitter for sustained pressure.
+  - name: Per-model independence
+    description: Limits are applied separately per model class, so concurrent traffic across Opus,
+      Sonnet, and Haiku draws from independent buckets.
+  - name: Acceleration limits
+    description: Sharp usage spikes can trigger acceleration-limit 429s independent of the published
+      tier limit. Ramp traffic gradually and maintain consistent patterns.
+  - name: Workspace sub-limits
+    description: Each workspace can have its own RPM / ITPM / OTPM caps below the org limit;
+      organization-wide caps always apply.
+  - name: Tier increases
+    description: Auto-advance on credit purchases up to Tier 4. Beyond Tier 4 (or for higher RPM /
+      ITPM / OTPM), contact sales via the Limits page in the Claude Console.
+  - name: Programmatic limits
+    description: Use the Rate Limits API to read configured organization and workspace limits in
+      code; monitor live consumption via the anthropic-ratelimit-* response headers.
 maintainers:
-  - name: Kin Lane
+  - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com
-  - name: Anthropic
-    email: support@anthropic.com
-    url: https://www.anthropic.com

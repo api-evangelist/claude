@@ -1,5 +1,6 @@
 specification: FinOps Framework
 specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -8,186 +9,137 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: Claude
 providerId: claude
-publisherName: Claude
-serviceCategory: API
+publisherName: Anthropic, PBC
+serviceCategory: AI Infrastructure
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
   - Artificial Intelligence
-  - Chatbot
-  - Conversational AI
   - Generative AI
   - Large Language Models
-  - Machine Learning
-  - Natural Language Processing
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the Claude API surface. Provides a FOCUS-aligned mapping
-  for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
-principles:
-  - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
-  - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
-  - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
-  - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
-domains:
-  - name: Understand Usage and Cost
-    capabilities:
-      - Data Ingestion
-      - Allocation
-      - Reporting and Analytics
-      - Anomaly Management
-  - name: Quantify Business Value
-    capabilities:
-      - Planning and Estimating
-      - Forecasting
-      - Budgeting
-      - Benchmarking
-      - Unit Economics
-  - name: Optimize Usage and Cost
-    capabilities:
-      - Architecting for Cloud
-      - Rate Optimization
-      - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
-  - name: Manage the FinOps Practice
-    capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
-      - Invoicing and Chargeback
-      - Onboarding Workloads
-      - Intersecting Disciplines
+description: >-
+  FOCUS-aligned FinOps for Claude. Cost is split between per-seat consumer / business plans (Free,
+  Pro, Max, Team, Enterprise) and pay-as-you-go API usage metered in input / output / cache tokens
+  per model, plus server-tool charges (web search at $10 / 1k searches, code execution beyond the
+  1,550-hour monthly free tier at $0.05 / container-hour, Managed Agents session runtime at $0.08 /
+  session-hour). Spend is gated by usage tiers (Tier 1-4 ceilings of $100 / $500 / $1,000 / $200,000
+  per month) until the organization moves to Monthly Invoicing. Effective unit cost is materially
+  reduced by prompt caching (cache reads at 0.1x input price; cache reads excluded from ITPM rate
+  limit on Claude 4.x) and by the Batch API (50% discount on input and output).
+sources:
+  - https://platform.claude.com/docs/en/about-claude/pricing
+  - https://platform.claude.com/docs/en/api/rate-limits
+  - https://claude.com/pricing
 billingModel:
-  pricingCategory: Usage-Based
+  pricingCategory: Pay-As-You-Go + Subscription
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
     - Usage
     - Purchase
     - Tax
-    - Credit
     - Adjustment
-  chargeFrequency: Recurring
+    - Credit
 focusColumns:
   ServiceName: Claude
-  ServiceCategory: Developer Tools / API
-  ProviderName: Claude
-  PublisherName: Claude
-  InvoiceIssuerName: Claude
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceCategory: AI Infrastructure
+  ProviderName: Anthropic
+  PublisherName: Anthropic, PBC
+  InvoiceIssuerName: Anthropic, PBC
   BillingCurrency: USD
   ChargeCategory: Usage
+  PricingUnit: token
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: tokens_input
+    description: Uncached input tokens billed at the model's base input rate (e.g. $5 / MTok for
+      Opus 4.7, $3 / MTok for Sonnet 4.6, $1 / MTok for Haiku 4.5).
+    unit: token
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
-      - tier
+      - model
+      - workspace
+      - inference_geo
+  - name: tokens_output
+    description: Output tokens billed at the model's output rate (e.g. $25 / MTok for Opus 4.7,
+      $15 / MTok for Sonnet 4.6, $5 / MTok for Haiku 4.5).
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - workspace
+      - inference_geo
+  - name: tokens_cache_write_5m
+    description: 5-minute cache writes billed at 1.25x base input.
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - workspace
+  - name: tokens_cache_write_1h
+    description: 1-hour cache writes billed at 2x base input.
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - workspace
+  - name: tokens_cache_read
+    description: Cache read / hit tokens billed at 0.1x base input. On Claude 4.x models these do
+      not count toward ITPM rate limits.
+    unit: token
+    aggregation: sum
+    dimensions:
+      - model
+      - workspace
+  - name: web_search_requests
+    description: Server-tool web searches at $10 per 1,000.
+    unit: search
+    aggregation: sum
+    dimensions:
+      - workspace
+  - name: code_execution_hours
+    description: Code-execution container hours beyond the 1,550-hour monthly free tier, at $0.05 /
+      hour per container.
+    unit: container-hour
+    aggregation: sum
+    dimensions:
+      - workspace
+  - name: managed_agent_session_runtime
+    description: Claude Managed Agents session runtime at $0.08 per session-hour, metered while the
+      session is running (not idle).
+    unit: session-hour
+    aggregation: sum
+    dimensions:
+      - workspace
+      - agent
+  - name: consumer_seats
+    description: Per-seat subscriptions for Pro, Max, Team, and Enterprise plans.
+    unit: seat-month
+    aggregation: max
+    dimensions:
+      - plan
       - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
-    aggregation: sum
-    dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
-    dimensions:
-      - api
-      - endpoint
-      - tier
-apis:
-  - name: Claude Messages API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - AI
-      - Conversational AI
-      - Large Language Models
-      - Natural Language Processing
-    serviceName: Claude Messages API
-    serviceCategory: API
-  - name: Claude Message Batches API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - AI
-      - Asynchronous
-      - Batch Processing
-      - Large Language Models
-    serviceName: Claude Message Batches API
-    serviceCategory: API
-  - name: Claude Models API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - AI
-      - Large Language Models
-      - Models
-    serviceName: Claude Models API
-    serviceCategory: API
-  - name: Claude Files API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - AI
-      - Document Processing
-      - File Management
-      - Files
-    serviceName: Claude Files API
-    serviceCategory: API
-  - name: Claude Admin API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - Administration
-      - AI
-      - API Keys
-      - Organization Management
-      - Workspaces
-    serviceName: Claude Admin API
-    serviceCategory: API
-  - name: Claude Usage and Cost API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - AI
-      - Analytics
-      - Cost Tracking
-      - Usage
-    serviceName: Claude Usage and Cost API
-    serviceCategory: API
-  - name: Claude Text Completions API
-    baseURL: https://api.anthropic.com/v1
-    tags:
-      - AI
-      - Large Language Models
-      - Legacy
-      - Text Completion
-    serviceName: Claude Text Completions API
-    serviceCategory: API
-unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
-    target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
-    target: TBD
+principles:
+  - name: Visibility
+    description: Use the Claude Console Usage page (token / request / rate-limit charts), the Rate
+      Limits API, and the anthropic-ratelimit-* response headers to track per-model consumption,
+      cache-hit rate, and headroom in real time.
+  - name: Allocation
+    description: Allocate cost via Workspaces (separate API keys, spend ceilings, and rate caps per
+      team / product) and the response usage object (input_tokens, cache_*_tokens, output_tokens,
+      server_tool_use). Tag invoices to the consuming product / cost center.
+  - name: Optimization
+    description: Lean into prompt caching (cache reads at 10% of input price and excluded from ITPM
+      on 4.x); use the Batch API (50% off) for non-interactive workloads; pick the right model
+      (Haiku for routine, Sonnet for general, Opus for hardest reasoning); avoid Fast Mode (6x)
+      unless latency-critical; avoid US-only inference_geo (1.1x) unless residency is required;
+      monitor cache-hit rate on the Usage page.
+  - name: Accountability
+    description: Treat each Workspace as a budget owner with its own customer-set spend limit below
+      the tier ceiling. Engineering owns model / cache choices; finance owns tier progression
+      ($5 / $40 / $200 / $400 credit thresholds for Tier 1-4) and Monthly Invoicing transition.
 maintainers:
-  - name: Kin Lane
+  - FN: Kin Lane
     email: kin@apievangelist.com
-    url: https://apievangelist.com
-  - name: Anthropic
-    email: support@anthropic.com
-    url: https://www.anthropic.com
