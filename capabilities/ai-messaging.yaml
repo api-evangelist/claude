@@ -1,216 +1,377 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Claude AI Messaging"
-  description: "Unified workflow for AI-powered messaging, token counting, batch processing, and model discovery. Used by AI application developers and data scientists."
+  label: Claude AI Messaging
+  description: Unified workflow for AI-powered messaging, token counting, batch processing, and model discovery. Used by AI
+    application developers and data scientists.
   tags:
-    - Anthropic
-    - Claude
-    - AI
-    - Messaging
-  created: "2026-04-18"
-  modified: "2026-04-18"
-
+  - Anthropic
+  - Claude
+  - AI
+  - Messaging
+  created: '2026-04-18'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
-
+- namespace: env
+  keys:
+    ANTHROPIC_API_KEY: ANTHROPIC_API_KEY
 capability:
   consumes:
-    - import: claude-messages
-      location: ./shared/claude-messages.yaml
-
+  - type: http
+    namespace: claude-messages
+    baseUri: https://api.anthropic.com/v1
+    description: Claude Messages API for AI-powered conversations and text generation.
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{ANTHROPIC_API_KEY}}'
+      placement: header
+    resources:
+    - name: messages
+      path: /messages
+      description: Message creation and token counting.
+      operations:
+      - name: create-message
+        method: POST
+        description: Send a message to Claude and receive a response.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            model: '{{tools.model}}'
+            max_tokens: '{{tools.max_tokens}}'
+            messages: '{{tools.messages}}'
+    - name: token-counting
+      path: /messages/count_tokens
+      description: Token counting.
+      operations:
+      - name: count-message-tokens
+        method: POST
+        description: Count tokens in a message.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            model: '{{tools.model}}'
+            messages: '{{tools.messages}}'
+    - name: message-batches
+      path: /messages/batches
+      description: Message batch management.
+      operations:
+      - name: create-message-batch
+        method: POST
+        description: Create a batch of message requests.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            requests: '{{tools.requests}}'
+      - name: list-message-batches
+        method: GET
+        description: List all message batches.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: message-batch-details
+      path: /messages/batches/{message_batch_id}
+      description: Individual message batch management.
+      operations:
+      - name: retrieve-message-batch
+        method: GET
+        description: Get message batch status.
+        inputParameters:
+        - name: message_batch_id
+          in: path
+          type: string
+          required: true
+          description: Message batch ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: delete-message-batch
+        method: DELETE
+        description: Delete a message batch.
+        inputParameters:
+        - name: message_batch_id
+          in: path
+          type: string
+          required: true
+          description: Message batch ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: message-batch-results
+      path: /messages/batches/{message_batch_id}/results
+      description: Message batch results.
+      operations:
+      - name: retrieve-message-batch-results
+        method: GET
+        description: Get message batch results.
+        inputParameters:
+        - name: message_batch_id
+          in: path
+          type: string
+          required: true
+          description: Message batch ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: message-batch-cancel
+      path: /messages/batches/{message_batch_id}/cancel
+      description: Cancel message batches.
+      operations:
+      - name: cancel-message-batch
+        method: POST
+        description: Cancel a message batch.
+        inputParameters:
+        - name: message_batch_id
+          in: path
+          type: string
+          required: true
+          description: Message batch ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: models
+      path: /models
+      description: Model listing.
+      operations:
+      - name: list-models
+        method: GET
+        description: List available Claude models.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: model-details
+      path: /models/{model_id}
+      description: Model details.
+      operations:
+      - name: get-model
+        method: GET
+        description: Get model metadata.
+        inputParameters:
+        - name: model_id
+          in: path
+          type: string
+          required: true
+          description: Model ID.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
-    - type: rest
-      port: 8080
-      namespace: ai-messaging-api
-      description: "Unified REST API for Claude AI messaging."
-      resources:
-        - path: /v1/messages
-          name: messages
-          description: "Message operations."
-          operations:
-            - method: POST
-              name: create-message
-              description: "Create a message."
-              call: "claude-messages.create-message"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/token-counts
-          name: token-counts
-          description: "Token counting."
-          operations:
-            - method: POST
-              name: count-tokens
-              description: "Count message tokens."
-              call: "claude-messages.count-message-tokens"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/batches
-          name: batches
-          description: "Batch management."
-          operations:
-            - method: GET
-              name: list-batches
-              description: "List message batches."
-              call: "claude-messages.list-message-batches"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-batch
-              description: "Create a message batch."
-              call: "claude-messages.create-message-batch"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/batches/{id}
-          name: batch-details
-          description: "Individual batch management."
-          operations:
-            - method: GET
-              name: get-batch
-              description: "Get batch status."
-              call: "claude-messages.retrieve-message-batch"
-              with:
-                message_batch_id: "rest.id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: DELETE
-              name: delete-batch
-              description: "Delete a batch."
-              call: "claude-messages.delete-message-batch"
-              with:
-                message_batch_id: "rest.id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/models
-          name: models
-          description: "Model discovery."
-          operations:
-            - method: GET
-              name: list-models
-              description: "List available models."
-              call: "claude-messages.list-models"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/models/{id}
-          name: model-details
-          description: "Model details."
-          operations:
-            - method: GET
-              name: get-model
-              description: "Get model metadata."
-              call: "claude-messages.get-model"
-              with:
-                model_id: "rest.id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: ai-messaging-mcp
-      transport: http
-      description: "MCP server for AI-assisted Claude messaging."
-      tools:
-        - name: create-message
-          description: "Send a message to Claude and receive a response."
-          hints:
-            readOnly: false
-          call: "claude-messages.create-message"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: count-message-tokens
-          description: "Count tokens in a message."
-          hints:
-            readOnly: true
-          call: "claude-messages.count-message-tokens"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: create-message-batch
-          description: "Create a batch of message requests."
-          hints:
-            readOnly: false
-          call: "claude-messages.create-message-batch"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-message-batches
-          description: "List all message batches."
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "claude-messages.list-message-batches"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: retrieve-message-batch
-          description: "Get message batch status and details."
-          hints:
-            readOnly: true
-          call: "claude-messages.retrieve-message-batch"
-          with:
-            message_batch_id: "tools.message_batch_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: retrieve-message-batch-results
-          description: "Get completed batch results."
-          hints:
-            readOnly: true
-          call: "claude-messages.retrieve-message-batch-results"
-          with:
-            message_batch_id: "tools.message_batch_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: cancel-message-batch
-          description: "Cancel an in-progress batch."
-          hints:
-            readOnly: false
-          call: "claude-messages.cancel-message-batch"
-          with:
-            message_batch_id: "tools.message_batch_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: delete-message-batch
-          description: "Delete a completed batch."
-          hints:
-            readOnly: false
-            destructive: true
-            idempotent: true
-          call: "claude-messages.delete-message-batch"
-          with:
-            message_batch_id: "tools.message_batch_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-models
-          description: "List available Claude models."
-          hints:
-            readOnly: true
-            openWorld: true
-          call: "claude-messages.list-models"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-model
-          description: "Get model metadata."
-          hints:
-            readOnly: true
-          call: "claude-messages.get-model"
-          with:
-            model_id: "tools.model_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: ai-messaging-api
+    description: Unified REST API for Claude AI messaging.
+    resources:
+    - path: /v1/messages
+      name: messages
+      description: Message operations.
+      operations:
+      - method: POST
+        name: create-message
+        description: Create a message.
+        call: claude-messages.create-message
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/token-counts
+      name: token-counts
+      description: Token counting.
+      operations:
+      - method: POST
+        name: count-tokens
+        description: Count message tokens.
+        call: claude-messages.count-message-tokens
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/batches
+      name: batches
+      description: Batch management.
+      operations:
+      - method: GET
+        name: list-batches
+        description: List message batches.
+        call: claude-messages.list-message-batches
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-batch
+        description: Create a message batch.
+        call: claude-messages.create-message-batch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/batches/{id}
+      name: batch-details
+      description: Individual batch management.
+      operations:
+      - method: GET
+        name: get-batch
+        description: Get batch status.
+        call: claude-messages.retrieve-message-batch
+        with:
+          message_batch_id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete-batch
+        description: Delete a batch.
+        call: claude-messages.delete-message-batch
+        with:
+          message_batch_id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/models
+      name: models
+      description: Model discovery.
+      operations:
+      - method: GET
+        name: list-models
+        description: List available models.
+        call: claude-messages.list-models
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/models/{id}
+      name: model-details
+      description: Model details.
+      operations:
+      - method: GET
+        name: get-model
+        description: Get model metadata.
+        call: claude-messages.get-model
+        with:
+          model_id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: ai-messaging-mcp
+    transport: http
+    description: MCP server for AI-assisted Claude messaging.
+    tools:
+    - name: create-message
+      description: Send a message to Claude and receive a response.
+      hints:
+        readOnly: false
+      call: claude-messages.create-message
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: count-message-tokens
+      description: Count tokens in a message.
+      hints:
+        readOnly: true
+      call: claude-messages.count-message-tokens
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-message-batch
+      description: Create a batch of message requests.
+      hints:
+        readOnly: false
+      call: claude-messages.create-message-batch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-message-batches
+      description: List all message batches.
+      hints:
+        readOnly: true
+        openWorld: true
+      call: claude-messages.list-message-batches
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-message-batch
+      description: Get message batch status and details.
+      hints:
+        readOnly: true
+      call: claude-messages.retrieve-message-batch
+      with:
+        message_batch_id: tools.message_batch_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-message-batch-results
+      description: Get completed batch results.
+      hints:
+        readOnly: true
+      call: claude-messages.retrieve-message-batch-results
+      with:
+        message_batch_id: tools.message_batch_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-message-batch
+      description: Cancel an in-progress batch.
+      hints:
+        readOnly: false
+      call: claude-messages.cancel-message-batch
+      with:
+        message_batch_id: tools.message_batch_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-message-batch
+      description: Delete a completed batch.
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: claude-messages.delete-message-batch
+      with:
+        message_batch_id: tools.message_batch_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-models
+      description: List available Claude models.
+      hints:
+        readOnly: true
+        openWorld: true
+      call: claude-messages.list-models
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-model
+      description: Get model metadata.
+      hints:
+        readOnly: true
+      call: claude-messages.get-model
+      with:
+        model_id: tools.model_id
+      outputParameters:
+      - type: object
+        mapping: $.
