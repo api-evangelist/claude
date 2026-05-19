@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Claude Messages API — Models
+  description: 'Claude Messages API — Models. 2 operations. Lead operation: List Models. Self-contained Naftiko capability
+    covering one Claude business surface.'
+  tags:
+  - Claude
+  - Models
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CLAUDE_API_KEY: CLAUDE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: messages-models
+    baseUri: https://api.anthropic.com/v1
+    description: Claude Messages API — Models business capability. Self-contained, no shared references.
+    resources:
+    - name: models
+      path: /models
+      operations:
+      - name: listmodels
+        method: GET
+        description: List Models
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: after_id
+          in: query
+          type: string
+          description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this
+            object.
+        - name: before_id
+          in: query
+          type: string
+          description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before
+            this object.
+        - name: limit
+          in: query
+          type: integer
+          description: Number of items to return per page.
+    - name: models-model_id
+      path: /models/{model_id}
+      operations:
+      - name: getmodel
+        method: GET
+        description: Get a Model
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: model_id
+          in: path
+          type: string
+          description: The unique identifier of the model to retrieve.
+          required: true
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.CLAUDE_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: messages-models-rest
+    port: 8080
+    description: REST adapter for Claude Messages API — Models. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/models
+      name: models
+      description: REST surface for models.
+      operations:
+      - method: GET
+        name: listmodels
+        description: List Models
+        call: messages-models.listmodels
+        with:
+          after_id: rest.after_id
+          before_id: rest.before_id
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/models/{model-id}
+      name: models-model-id
+      description: REST surface for models-model_id.
+      operations:
+      - method: GET
+        name: getmodel
+        description: Get a Model
+        call: messages-models.getmodel
+        with:
+          model_id: rest.model_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: messages-models-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Claude Messages API — Models. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-models
+      description: List Models
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messages-models.listmodels
+      with:
+        after_id: tools.after_id
+        before_id: tools.before_id
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-model
+      description: Get a Model
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messages-models.getmodel
+      with:
+        model_id: tools.model_id
+      outputParameters:
+      - type: object
+        mapping: $.

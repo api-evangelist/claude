@@ -1,0 +1,251 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Claude Messages API — Message Batches
+  description: 'Claude Messages API — Message Batches. 6 operations. Lead operation: Create a Message Batch. Self-contained
+    Naftiko capability covering one Claude business surface.'
+  tags:
+  - Claude
+  - Message Batches
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    CLAUDE_API_KEY: CLAUDE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: messages-message-batches
+    baseUri: https://api.anthropic.com/v1
+    description: Claude Messages API — Message Batches business capability. Self-contained, no shared references.
+    resources:
+    - name: messages-batches
+      path: /messages/batches
+      operations:
+      - name: createmessagebatch
+        method: POST
+        description: Create a Message Batch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: listmessagebatches
+        method: GET
+        description: List Message Batches
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: after_id
+          in: query
+          type: string
+          description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this
+            object.
+        - name: before_id
+          in: query
+          type: string
+          description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before
+            this object.
+        - name: limit
+          in: query
+          type: integer
+          description: Number of items to return per page.
+    - name: messages-batches-message_batch_id
+      path: /messages/batches/{message_batch_id}
+      operations:
+      - name: retrievemessagebatch
+        method: GET
+        description: Retrieve a Message Batch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletemessagebatch
+        method: DELETE
+        description: Delete a Message Batch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages-batches-message_batch_id-cancel
+      path: /messages/batches/{message_batch_id}/cancel
+      operations:
+      - name: cancelmessagebatch
+        method: POST
+        description: Cancel a Message Batch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages-batches-message_batch_id-results
+      path: /messages/batches/{message_batch_id}/results
+      operations:
+      - name: retrievemessagebatchresults
+        method: GET
+        description: Retrieve Message Batch Results
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: x-api-key
+      value: '{{env.CLAUDE_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: messages-message-batches-rest
+    port: 8080
+    description: REST adapter for Claude Messages API — Message Batches. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/messages/batches
+      name: messages-batches
+      description: REST surface for messages-batches.
+      operations:
+      - method: POST
+        name: createmessagebatch
+        description: Create a Message Batch
+        call: messages-message-batches.createmessagebatch
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listmessagebatches
+        description: List Message Batches
+        call: messages-message-batches.listmessagebatches
+        with:
+          after_id: rest.after_id
+          before_id: rest.before_id
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/messages/batches/{message-batch-id}
+      name: messages-batches-message-batch-id
+      description: REST surface for messages-batches-message_batch_id.
+      operations:
+      - method: GET
+        name: retrievemessagebatch
+        description: Retrieve a Message Batch
+        call: messages-message-batches.retrievemessagebatch
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletemessagebatch
+        description: Delete a Message Batch
+        call: messages-message-batches.deletemessagebatch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/messages/batches/{message-batch-id}/cancel
+      name: messages-batches-message-batch-id-cancel
+      description: REST surface for messages-batches-message_batch_id-cancel.
+      operations:
+      - method: POST
+        name: cancelmessagebatch
+        description: Cancel a Message Batch
+        call: messages-message-batches.cancelmessagebatch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/messages/batches/{message-batch-id}/results
+      name: messages-batches-message-batch-id-results
+      description: REST surface for messages-batches-message_batch_id-results.
+      operations:
+      - method: GET
+        name: retrievemessagebatchresults
+        description: Retrieve Message Batch Results
+        call: messages-message-batches.retrievemessagebatchresults
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: messages-message-batches-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Claude Messages API — Message Batches. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: create-message-batch
+      description: Create a Message Batch
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messages-message-batches.createmessagebatch
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-message-batches
+      description: List Message Batches
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messages-message-batches.listmessagebatches
+      with:
+        after_id: tools.after_id
+        before_id: tools.before_id
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-message-batch
+      description: Retrieve a Message Batch
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messages-message-batches.retrievemessagebatch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-message-batch
+      description: Delete a Message Batch
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: messages-message-batches.deletemessagebatch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-message-batch
+      description: Cancel a Message Batch
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messages-message-batches.cancelmessagebatch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: retrieve-message-batch-results
+      description: Retrieve Message Batch Results
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messages-message-batches.retrievemessagebatchresults
+      outputParameters:
+      - type: object
+        mapping: $.
