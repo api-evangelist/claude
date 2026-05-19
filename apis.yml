@@ -4,7 +4,7 @@ description: >-
 image: https://www.anthropic.com/images/icons/anthropic-icon.png
 url: https://www.anthropic.com
 created: '2024'
-modified: '2026-04-18'
+modified: '2026-05-19'
 tags:
   - Artificial Intelligence
   - Chatbot
@@ -443,6 +443,9 @@ common:
         description: Integrate Claude into LangChain pipelines for advanced AI application development.
       - name: MCP Protocol
         description: Connect Claude to external data sources and tools via the Model Context Protocol.
+  - name: MCP Server
+    url: https://github.com/anthropics/claude-ai-mcp
+    type: MCPServer
 maintainers:
   - name: Kin Lane
     email: kin@apievangelist.com
