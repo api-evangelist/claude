@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CacheControl",
+  "title": "CacheControl",
+  "type": "object",
+  "description": "Cache control settings for prompt caching.",
+  "required": [
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "ephemeral",
+      "example": "example_value"
+    },
+    "ttl": {
+      "type": "string",
+      "description": "Time-to-live for the cache entry.",
+      "enum": [
+        "5m",
+        "1h"
+      ],
+      "example": "5m"
+    }
+  }
+}

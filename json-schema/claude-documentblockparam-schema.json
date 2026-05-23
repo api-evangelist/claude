@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DocumentBlockParam",
+  "title": "DocumentBlockParam",
+  "type": "object",
+  "description": "A document content block for PDFs and text documents.",
+  "required": [
+    "type",
+    "source"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "document",
+      "example": "example_value"
+    },
+    "source": {
+      "type": "object",
+      "description": "The source of the document.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of document source.",
+          "enum": [
+            "base64",
+            "url",
+            "text",
+            "content"
+          ]
+        },
+        "media_type": {
+          "type": "string",
+          "description": "The media type of the document.",
+          "enum": [
+            "application/pdf",
+            "text/plain"
+          ]
+        },
+        "data": {
+          "type": "string",
+          "description": "Base64-encoded document data."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the document."
+        }
+      },
+      "example": "example_value"
+    },
+    "title": {
+      "type": "string",
+      "description": "Optional title for the document.",
+      "example": "Example Title"
+    },
+    "context": {
+      "type": "string",
+      "description": "Optional context about the document.",
+      "example": "example_value"
+    },
+    "citations": {
+      "type": "object",
+      "description": "Citation configuration for the document.",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "example": "example_value"
+    },
+    "cache_control": {
+      "$ref": "#/components/schemas/CacheControl"
+    }
+  }
+}

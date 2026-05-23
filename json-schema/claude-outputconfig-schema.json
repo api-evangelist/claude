@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OutputConfig",
+  "title": "OutputConfig",
+  "type": "object",
+  "description": "Configuration for structured output format.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The output format type.",
+      "enum": [
+        "json_schema"
+      ],
+      "example": "json_schema"
+    },
+    "schema": {
+      "type": "object",
+      "description": "JSON Schema defining the expected output structure.",
+      "additionalProperties": true,
+      "example": "example_value"
+    }
+  }
+}

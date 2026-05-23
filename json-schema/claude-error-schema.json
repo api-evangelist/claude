@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Error",
+  "title": "Error",
+  "type": "object",
+  "description": "An error response from the API.",
+  "required": [
+    "type",
+    "error"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "error",
+      "example": "example_value"
+    },
+    "error": {
+      "type": "object",
+      "required": [
+        "type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of error.",
+          "enum": [
+            "invalid_request_error",
+            "authentication_error",
+            "permission_error",
+            "not_found_error",
+            "rate_limit_error",
+            "api_error",
+            "overloaded_error"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "A human-readable description of the error."
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

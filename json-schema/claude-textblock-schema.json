@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TextBlock",
+  "title": "TextBlock",
+  "type": "object",
+  "description": "A text content block in a response.",
+  "required": [
+    "type",
+    "text"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "text",
+      "example": "example_value"
+    },
+    "text": {
+      "type": "string",
+      "description": "The text content.",
+      "example": "example_value"
+    },
+    "citations": {
+      "type": "array",
+      "description": "Citations for the text content, if any.",
+      "items": {
+        "type": "object"
+      },
+      "example": []
+    }
+  }
+}

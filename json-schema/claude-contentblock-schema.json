@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ContentBlock",
+  "title": "ContentBlock",
+  "description": "A content block in a message response.",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/TextBlock"
+    },
+    {
+      "$ref": "#/components/schemas/ToolUseBlock"
+    },
+    {
+      "$ref": "#/components/schemas/ThinkingBlock"
+    }
+  ],
+  "discriminator": {
+    "propertyName": "type",
+    "mapping": {
+      "text": "#/components/schemas/TextBlock",
+      "tool_use": "#/components/schemas/ToolUseBlock",
+      "thinking": "#/components/schemas/ThinkingBlock"
+    }
+  }
+}

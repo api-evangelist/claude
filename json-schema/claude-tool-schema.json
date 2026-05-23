@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Tool",
+  "title": "Tool",
+  "type": "object",
+  "description": "Definition of a tool that the model can use.",
+  "required": [
+    "name",
+    "input_schema"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the tool. Must match the regex ^[a-zA-Z0-9_-]{1,64}$.",
+      "pattern": "^[a-zA-Z0-9_-]{1,64}$",
+      "example": "get_stock_price"
+    },
+    "description": {
+      "type": "string",
+      "description": "A detailed description of what the tool does, when it should be used, and what each parameter means.",
+      "example": "A sample description."
+    },
+    "input_schema": {
+      "type": "object",
+      "description": "JSON Schema object defining the expected parameters for the tool.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "object"
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "example": "example_value"
+    },
+    "cache_control": {
+      "$ref": "#/components/schemas/CacheControl"
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of tool. Omit for custom tools. Use specific type strings for server tools like web_search_20260209, code_execution_20260120, text_editor_20250728, etc.",
+      "example": "example_value"
+    }
+  }
+}

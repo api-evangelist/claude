@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MessageBatchList",
+  "title": "MessageBatchList",
+  "type": "object",
+  "description": "Paginated list of message batches.",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/MessageBatch"
+      },
+      "example": []
+    },
+    "has_more": {
+      "type": "boolean",
+      "description": "Whether there are more results available.",
+      "example": true
+    },
+    "first_id": {
+      "type": "string",
+      "description": "ID of the first item. Use as before_id for the previous page.",
+      "nullable": true,
+      "example": "500123"
+    },
+    "last_id": {
+      "type": "string",
+      "description": "ID of the last item. Use as after_id for the next page.",
+      "nullable": true,
+      "example": "500123"
+    }
+  }
+}

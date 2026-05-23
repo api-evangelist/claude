@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CreateMessageBatchRequest",
+  "title": "CreateMessageBatchRequest",
+  "type": "object",
+  "required": [
+    "requests"
+  ],
+  "properties": {
+    "requests": {
+      "type": "array",
+      "description": "Array of batch request objects. Each contains a custom_id and params.",
+      "items": {
+        "$ref": "#/components/schemas/BatchRequestItem"
+      },
+      "minItems": 1,
+      "example": []
+    }
+  }
+}

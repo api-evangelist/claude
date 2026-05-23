@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DeletedMessageBatch",
+  "title": "DeletedMessageBatch",
+  "type": "object",
+  "description": "Confirmation of a deleted message batch.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The ID of the deleted batch.",
+      "example": "abc123"
+    },
+    "type": {
+      "type": "string",
+      "const": "message_batch_deleted",
+      "example": "example_value"
+    }
+  }
+}

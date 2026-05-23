@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MessageBatchResult",
+  "title": "MessageBatchResult",
+  "type": "object",
+  "description": "A single result from a message batch.",
+  "properties": {
+    "custom_id": {
+      "type": "string",
+      "description": "The developer-provided custom_id from the original request.",
+      "example": "500123"
+    },
+    "result": {
+      "type": "object",
+      "description": "The result of the request.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of result.",
+          "enum": [
+            "succeeded",
+            "errored",
+            "canceled",
+            "expired"
+          ]
+        },
+        "message": {
+          "$ref": "#/components/schemas/Message"
+        },
+        "error": {
+          "$ref": "#/components/schemas/Error"
+        }
+      },
+      "example": "example_value"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ToolUseBlockParam",
+  "title": "ToolUseBlockParam",
+  "type": "object",
+  "description": "A tool use content block in a request (for multi-turn tool use).",
+  "required": [
+    "type",
+    "id",
+    "name",
+    "input"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "tool_use",
+      "example": "example_value"
+    },
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this tool use.",
+      "example": "abc123"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the tool.",
+      "example": "Example Title"
+    },
+    "input": {
+      "type": "object",
+      "description": "The input to the tool.",
+      "additionalProperties": true,
+      "example": "example_value"
+    },
+    "cache_control": {
+      "$ref": "#/components/schemas/CacheControl"
+    }
+  }
+}

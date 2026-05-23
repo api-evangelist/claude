@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ImageBlockParam",
+  "title": "ImageBlockParam",
+  "type": "object",
+  "description": "An image content block. Supports base64-encoded or URL-referenced images.",
+  "required": [
+    "type",
+    "source"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "image",
+      "example": "example_value"
+    },
+    "source": {
+      "type": "object",
+      "description": "The source of the image.",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of image source.",
+          "enum": [
+            "base64",
+            "url"
+          ]
+        },
+        "media_type": {
+          "type": "string",
+          "description": "The media type of the image.",
+          "enum": [
+            "image/jpeg",
+            "image/png",
+            "image/gif",
+            "image/webp"
+          ]
+        },
+        "data": {
+          "type": "string",
+          "description": "Base64-encoded image data. Required when type is base64."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the image. Required when type is url."
+        }
+      },
+      "example": "example_value"
+    },
+    "cache_control": {
+      "$ref": "#/components/schemas/CacheControl"
+    }
+  }
+}

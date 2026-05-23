@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MessageBatch",
+  "title": "MessageBatch",
+  "type": "object",
+  "description": "A message batch object representing an asynchronous batch of message requests.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the message batch.",
+      "pattern": "^msgbatch_",
+      "example": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d"
+    },
+    "type": {
+      "type": "string",
+      "description": "Object type. Always \"message_batch\".",
+      "const": "message_batch",
+      "example": "example_value"
+    },
+    "processing_status": {
+      "type": "string",
+      "description": "The processing status of the batch.",
+      "enum": [
+        "in_progress",
+        "canceling",
+        "ended"
+      ],
+      "example": "in_progress"
+    },
+    "request_counts": {
+      "type": "object",
+      "description": "Tallies of requests by their status within the batch.",
+      "properties": {
+        "processing": {
+          "type": "integer",
+          "description": "Number of requests still being processed."
+        },
+        "succeeded": {
+          "type": "integer",
+          "description": "Number of requests that completed successfully."
+        },
+        "errored": {
+          "type": "integer",
+          "description": "Number of requests that encountered errors."
+        },
+        "canceled": {
+          "type": "integer",
+          "description": "Number of requests that were canceled."
+        },
+        "expired": {
+          "type": "integer",
+          "description": "Number of requests that expired."
+        }
+      },
+      "example": "example_value"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 datetime when the batch ended processing.",
+      "nullable": true,
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 datetime when the batch was created.",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 datetime when the batch results will expire.",
+      "example": "2026-01-15T10:30:00Z"
+    },
+    "results_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to retrieve the batch results. Available when the batch is complete.",
+      "nullable": true,
+      "example": "https://www.example.com"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "processing_status",
+    "request_counts",
+    "created_at",
+    "expires_at"
+  ]
+}

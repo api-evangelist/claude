@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ContentBlockParam",
+  "title": "ContentBlockParam",
+  "description": "A content block in a message request.",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/TextBlockParam"
+    },
+    {
+      "$ref": "#/components/schemas/ImageBlockParam"
+    },
+    {
+      "$ref": "#/components/schemas/DocumentBlockParam"
+    },
+    {
+      "$ref": "#/components/schemas/ToolUseBlockParam"
+    },
+    {
+      "$ref": "#/components/schemas/ToolResultBlockParam"
+    },
+    {
+      "$ref": "#/components/schemas/ThinkingBlockParam"
+    }
+  ],
+  "discriminator": {
+    "propertyName": "type",
+    "mapping": {
+      "text": "#/components/schemas/TextBlockParam",
+      "image": "#/components/schemas/ImageBlockParam",
+      "document": "#/components/schemas/DocumentBlockParam",
+      "tool_use": "#/components/schemas/ToolUseBlockParam",
+      "tool_result": "#/components/schemas/ToolResultBlockParam",
+      "thinking": "#/components/schemas/ThinkingBlockParam"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Usage",
+  "title": "Usage",
+  "type": "object",
+  "description": "Token usage information for the request.",
+  "required": [
+    "input_tokens",
+    "output_tokens"
+  ],
+  "properties": {
+    "input_tokens": {
+      "type": "integer",
+      "description": "The number of input tokens consumed.",
+      "example": 25
+    },
+    "output_tokens": {
+      "type": "integer",
+      "description": "The number of output tokens generated.",
+      "example": 150
+    },
+    "cache_creation_input_tokens": {
+      "type": "integer",
+      "description": "The number of input tokens used to create a cache entry.",
+      "example": 10
+    },
+    "cache_read_input_tokens": {
+      "type": "integer",
+      "description": "The number of input tokens read from cache.",
+      "example": 10
+    }
+  }
+}

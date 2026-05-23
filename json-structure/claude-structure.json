@@ -1,0 +1,377 @@
+{
+  "provider": "Claude",
+  "providerId": "claude",
+  "kind": "json-structure",
+  "description": "Structural overview of the Claude API surface; extracted from openapi/.",
+  "schemaCount": 32,
+  "operationCount": 10,
+  "schemas": [
+    {
+      "name": "CreateMessageRequest",
+      "type": "object",
+      "propertyCount": 16,
+      "required": [
+        "model",
+        "max_tokens",
+        "messages"
+      ]
+    },
+    {
+      "name": "CountTokensRequest",
+      "type": "object",
+      "propertyCount": 5,
+      "required": [
+        "model",
+        "messages"
+      ]
+    },
+    {
+      "name": "TokenCount",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "Message",
+      "type": "object",
+      "propertyCount": 8,
+      "required": [
+        "id",
+        "type",
+        "role",
+        "content",
+        "model",
+        "stop_reason",
+        "usage"
+      ]
+    },
+    {
+      "name": "MessageParam",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "role",
+        "content"
+      ]
+    },
+    {
+      "name": "ContentBlock",
+      "type": null,
+      "propertyCount": 0,
+      "required": []
+    },
+    {
+      "name": "ContentBlockParam",
+      "type": null,
+      "propertyCount": 0,
+      "required": []
+    },
+    {
+      "name": "TextBlock",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "type",
+        "text"
+      ]
+    },
+    {
+      "name": "TextBlockParam",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "type",
+        "text"
+      ]
+    },
+    {
+      "name": "ImageBlockParam",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "type",
+        "source"
+      ]
+    },
+    {
+      "name": "DocumentBlockParam",
+      "type": "object",
+      "propertyCount": 6,
+      "required": [
+        "type",
+        "source"
+      ]
+    },
+    {
+      "name": "ToolUseBlock",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "type",
+        "id",
+        "name",
+        "input"
+      ]
+    },
+    {
+      "name": "ToolUseBlockParam",
+      "type": "object",
+      "propertyCount": 5,
+      "required": [
+        "type",
+        "id",
+        "name",
+        "input"
+      ]
+    },
+    {
+      "name": "ToolResultBlockParam",
+      "type": "object",
+      "propertyCount": 5,
+      "required": [
+        "type",
+        "tool_use_id"
+      ]
+    },
+    {
+      "name": "ThinkingBlock",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "type",
+        "thinking",
+        "signature"
+      ]
+    },
+    {
+      "name": "ThinkingBlockParam",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "type",
+        "thinking",
+        "signature"
+      ]
+    },
+    {
+      "name": "Tool",
+      "type": "object",
+      "propertyCount": 5,
+      "required": [
+        "name",
+        "input_schema"
+      ]
+    },
+    {
+      "name": "ToolChoice",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "name": "ThinkingConfig",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "name": "OutputConfig",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "CacheControl",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "name": "Metadata",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "Usage",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "input_tokens",
+        "output_tokens"
+      ]
+    },
+    {
+      "name": "CreateMessageBatchRequest",
+      "type": "object",
+      "propertyCount": 1,
+      "required": [
+        "requests"
+      ]
+    },
+    {
+      "name": "BatchRequestItem",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "custom_id",
+        "params"
+      ]
+    },
+    {
+      "name": "MessageBatch",
+      "type": "object",
+      "propertyCount": 8,
+      "required": [
+        "id",
+        "type",
+        "processing_status",
+        "request_counts",
+        "created_at",
+        "expires_at"
+      ]
+    },
+    {
+      "name": "MessageBatchList",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "MessageBatchResult",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "DeletedMessageBatch",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "ModelInfo",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "id",
+        "type",
+        "display_name",
+        "created_at"
+      ]
+    },
+    {
+      "name": "ModelList",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "type",
+        "error"
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/messages",
+      "operationId": "createMessage",
+      "summary": "Create a Message",
+      "tags": [
+        "Messages"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/messages/count_tokens",
+      "operationId": "countMessageTokens",
+      "summary": "Count Message Tokens",
+      "tags": [
+        "Messages"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/messages/batches",
+      "operationId": "listMessageBatches",
+      "summary": "List Message Batches",
+      "tags": [
+        "Message Batches"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/messages/batches",
+      "operationId": "createMessageBatch",
+      "summary": "Create a Message Batch",
+      "tags": [
+        "Message Batches"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/messages/batches/{message_batch_id}",
+      "operationId": "retrieveMessageBatch",
+      "summary": "Retrieve a Message Batch",
+      "tags": [
+        "Message Batches"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/messages/batches/{message_batch_id}",
+      "operationId": "deleteMessageBatch",
+      "summary": "Delete a Message Batch",
+      "tags": [
+        "Message Batches"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/messages/batches/{message_batch_id}/results",
+      "operationId": "retrieveMessageBatchResults",
+      "summary": "Retrieve Message Batch Results",
+      "tags": [
+        "Message Batches"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/messages/batches/{message_batch_id}/cancel",
+      "operationId": "cancelMessageBatch",
+      "summary": "Cancel a Message Batch",
+      "tags": [
+        "Message Batches"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/models",
+      "operationId": "listModels",
+      "summary": "List Models",
+      "tags": [
+        "Models"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/models/{model_id}",
+      "operationId": "getModel",
+      "summary": "Get a Model",
+      "tags": [
+        "Models"
+      ]
+    }
+  ]
+}

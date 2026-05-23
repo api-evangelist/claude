@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TextBlockParam",
+  "title": "TextBlockParam",
+  "type": "object",
+  "description": "A text content block in a request.",
+  "required": [
+    "type",
+    "text"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "text",
+      "example": "example_value"
+    },
+    "text": {
+      "type": "string",
+      "description": "The text content.",
+      "example": "example_value"
+    },
+    "cache_control": {
+      "$ref": "#/components/schemas/CacheControl"
+    }
+  }
+}

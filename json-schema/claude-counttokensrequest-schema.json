@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CountTokensRequest",
+  "title": "CountTokensRequest",
+  "type": "object",
+  "required": [
+    "model",
+    "messages"
+  ],
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "The model to use for token counting.",
+      "example": "claude-sonnet-4-6"
+    },
+    "messages": {
+      "type": "array",
+      "description": "Input messages to count tokens for.",
+      "items": {
+        "$ref": "#/components/schemas/MessageParam"
+      },
+      "minItems": 1,
+      "example": []
+    },
+    "system": {
+      "description": "System prompt to include in the token count.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/TextBlockParam"
+          }
+        }
+      ],
+      "example": "example_value"
+    },
+    "tools": {
+      "type": "array",
+      "description": "Tool definitions to include in the token count.",
+      "items": {
+        "$ref": "#/components/schemas/Tool"
+      },
+      "example": []
+    },
+    "thinking": {
+      "$ref": "#/components/schemas/ThinkingConfig"
+    }
+  }
+}

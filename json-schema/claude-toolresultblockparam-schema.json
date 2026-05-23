@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ToolResultBlockParam",
+  "title": "ToolResultBlockParam",
+  "type": "object",
+  "description": "A tool result content block, providing the output from a tool invocation.",
+  "required": [
+    "type",
+    "tool_use_id"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "tool_result",
+      "example": "example_value"
+    },
+    "tool_use_id": {
+      "type": "string",
+      "description": "The id of the tool use request this is a result for. Must match a tool_use block id.",
+      "example": "500123"
+    },
+    "content": {
+      "description": "The result of the tool call. Can be a string or array of content blocks.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TextBlockParam"
+              },
+              {
+                "$ref": "#/components/schemas/ImageBlockParam"
+              }
+            ]
+          }
+        }
+      ],
+      "example": "example_value"
+    },
+    "is_error": {
+      "type": "boolean",
+      "description": "Set to true if the tool execution resulted in an error.",
+      "default": false,
+      "example": true
+    },
+    "cache_control": {
+      "$ref": "#/components/schemas/CacheControl"
+    }
+  }
+}

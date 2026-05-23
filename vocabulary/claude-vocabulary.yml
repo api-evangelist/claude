@@ -1,0 +1,11 @@
+name: Claude Domain Vocabulary
+provider: Claude
+providerId: claude
+description: Tag-derived vocabulary for the Claude API surface; sourced from openapi/ tags.
+terms:
+- term: Messages
+  description: Create messages and count tokens
+- term: Message Batches
+  description: Create and manage asynchronous message batches
+- term: Models
+  description: List and retrieve available Claude models
