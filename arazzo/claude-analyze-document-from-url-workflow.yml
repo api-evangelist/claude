@@ -1,0 +1,122 @@
+arazzo: 1.0.1
+info:
+  title: Claude Analyze Document From URL
+  summary: Count tokens for a URL-referenced document, then ask Claude a question about it.
+  description: >-
+    A document-grounded question-answering flow. This spec does not expose a
+    Files API, so the common "upload a file then reference it in a message"
+    pattern is adapted to use a URL-referenced document content block, which the
+    Messages API supports natively. The workflow first counts the tokens the
+    document plus question would consume, then sends a message containing a
+    document block (pointing at the document URL) and a text question so Claude
+    can answer grounded in the document. Every step spells out its request
+    inline — including the required x-api-key and anthropic-version headers — so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: claudeApi
+  url: ../openapi/claude-messages-api.yml
+  type: openapi
+workflows:
+- workflowId: analyze-document-from-url
+  summary: Token-check then answer a question about a URL-referenced document.
+  description: >-
+    Counts tokens for a document-plus-question payload, then sends a message
+    with a URL document block and a text question, returning the grounded answer.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - model
+    - documentUrl
+    - question
+    properties:
+      apiKey:
+        type: string
+        description: Anthropic API key sent in the x-api-key header.
+      anthropicVersion:
+        type: string
+        description: Value for the required anthropic-version header.
+        default: '2023-06-01'
+      model:
+        type: string
+        description: The model to analyze the document with.
+      documentUrl:
+        type: string
+        description: The URL of the PDF or text document to analyze.
+      question:
+        type: string
+        description: The question to ask about the document.
+      maxTokens:
+        type: integer
+        description: Maximum number of tokens to generate in the answer.
+        default: 1024
+  steps:
+  - stepId: countDocumentTokens
+    description: >-
+      Count the tokens the document and question will consume so the request can
+      be verified to fit within the model's context window before answering.
+    operationId: countMessageTokens
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        messages:
+        - role: user
+          content:
+          - type: document
+            source:
+              type: url
+              url: $inputs.documentUrl
+          - type: text
+            text: $inputs.question
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      inputTokens: $response.body#/input_tokens
+  - stepId: answerFromDocument
+    description: >-
+      Send the document block and question to the model and capture the grounded
+      answer.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content:
+          - type: document
+            source:
+              type: url
+              url: $inputs.documentUrl
+          - type: text
+            text: $inputs.question
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageId: $response.body#/id
+      content: $response.body#/content
+      stopReason: $response.body#/stop_reason
+      usage: $response.body#/usage
+  outputs:
+    estimatedInputTokens: $steps.countDocumentTokens.outputs.inputTokens
+    messageId: $steps.answerFromDocument.outputs.messageId
+    content: $steps.answerFromDocument.outputs.content
+    usage: $steps.answerFromDocument.outputs.usage

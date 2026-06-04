@@ -1,0 +1,114 @@
+arazzo: 1.0.1
+info:
+  title: Claude Find Latest Batch Results
+  summary: List recent message batches, inspect the most recent one, and retrieve its results if it has ended.
+  description: >-
+    A batch-discovery and retrieval flow. The workflow lists the most recent
+    message batches in the workspace, retrieves the full status of the newest
+    batch to confirm whether its processing has ended, and — when it has —
+    streams that batch's results as a JSONL file. A branch ensures results are
+    only fetched once the batch's processing_status is ended. Every step spells
+    out its request inline — including the required x-api-key and
+    anthropic-version headers — so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: claudeApi
+  url: ../openapi/claude-messages-api.yml
+  type: openapi
+workflows:
+- workflowId: find-latest-batch-results
+  summary: Locate the newest message batch and retrieve its results if it has ended.
+  description: >-
+    Lists batches, retrieves the newest batch's status, and streams its results
+    when processing has ended.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    properties:
+      apiKey:
+        type: string
+        description: Anthropic API key sent in the x-api-key header.
+      anthropicVersion:
+        type: string
+        description: Value for the required anthropic-version header.
+        default: '2023-06-01'
+      limit:
+        type: integer
+        description: Number of batches to list when looking for the newest one.
+        default: 20
+  steps:
+  - stepId: listBatches
+    description: >-
+      List recent message batches in the workspace, capturing the id of the
+      first (newest) batch.
+    operationId: listMessageBatches
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      newestBatchId: $response.body#/data/0/id
+      hasMore: $response.body#/has_more
+  - stepId: inspectNewestBatch
+    description: >-
+      Retrieve the newest batch's full status. If its processing has ended,
+      branch to retrieving the results.
+    operationId: retrieveMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    - name: message_batch_id
+      in: path
+      value: $steps.listBatches.outputs.newestBatchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      processingStatus: $response.body#/processing_status
+      resultsUrl: $response.body#/results_url
+      requestCounts: $response.body#/request_counts
+    onSuccess:
+    - name: ended
+      type: goto
+      stepId: getResults
+      criteria:
+      - context: $response.body
+        condition: $.processing_status == "ended"
+        type: jsonpath
+  - stepId: getResults
+    description: >-
+      Stream the newest batch's results as a JSONL file now that its processing
+      has ended.
+    operationId: retrieveMessageBatchResults
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    - name: message_batch_id
+      in: path
+      value: $steps.listBatches.outputs.newestBatchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      results: $response.body
+  outputs:
+    newestBatchId: $steps.listBatches.outputs.newestBatchId
+    processingStatus: $steps.inspectNewestBatch.outputs.processingStatus
+    requestCounts: $steps.inspectNewestBatch.outputs.requestCounts
+    results: $steps.getResults.outputs.results

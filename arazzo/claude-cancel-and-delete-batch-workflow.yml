@@ -1,0 +1,143 @@
+arazzo: 1.0.1
+info:
+  title: Claude Cancel and Delete Batch
+  summary: Submit a batch, request cancellation, poll until it ends, then delete it.
+  description: >-
+    A batch lifecycle teardown flow. The workflow submits a batch of
+    message-creation requests, immediately requests cancellation, then polls the
+    batch status on a loop until its processing_status reaches ended —
+    cancellation is asynchronous, so the batch transitions through "canceling"
+    before "ended". Once ended, the batch is deleted, since the API only permits
+    deletion of batches whose processing has ended. Every step spells out its
+    request inline — including the required x-api-key and anthropic-version
+    headers — so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: claudeApi
+  url: ../openapi/claude-messages-api.yml
+  type: openapi
+workflows:
+- workflowId: cancel-and-delete-batch
+  summary: Create a batch, cancel it, wait for it to end, then delete it.
+  description: >-
+    Submits a batch, requests cancellation, polls retrieveMessageBatch until
+    processing ends, then deletes the batch.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - requests
+    properties:
+      apiKey:
+        type: string
+        description: Anthropic API key sent in the x-api-key header.
+      anthropicVersion:
+        type: string
+        description: Value for the required anthropic-version header.
+        default: '2023-06-01'
+      requests:
+        type: array
+        description: >-
+          Array of batch request items, each with a custom_id and a params
+          object matching a Create Message request.
+        items:
+          type: object
+  steps:
+  - stepId: submitBatch
+    description: >-
+      Submit the batch of message-creation requests, capturing its id and
+      initial processing status.
+    operationId: createMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        requests: $inputs.requests
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      batchId: $response.body#/id
+      processingStatus: $response.body#/processing_status
+  - stepId: requestCancel
+    description: >-
+      Request cancellation of the in-progress batch. Cancellation is
+      asynchronous, so the batch moves to "canceling" before reaching "ended".
+    operationId: cancelMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    - name: message_batch_id
+      in: path
+      value: $steps.submitBatch.outputs.batchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      processingStatus: $response.body#/processing_status
+  - stepId: pollUntilEnded
+    description: >-
+      Poll the batch status. While processing_status is not "ended", retry after
+      a delay; once ended, proceed to delete the batch.
+    operationId: retrieveMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    - name: message_batch_id
+      in: path
+      value: $steps.submitBatch.outputs.batchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      processingStatus: $response.body#/processing_status
+    onSuccess:
+    - name: retryWhileCanceling
+      type: retry
+      retryAfter: 15
+      retryLimit: 240
+      criteria:
+      - context: $response.body
+        condition: $.processing_status != "ended"
+        type: jsonpath
+    - name: ended
+      type: goto
+      stepId: deleteBatch
+      criteria:
+      - context: $response.body
+        condition: $.processing_status == "ended"
+        type: jsonpath
+  - stepId: deleteBatch
+    description: >-
+      Delete the batch now that its processing has ended, freeing the resource.
+    operationId: deleteMessageBatch
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    - name: message_batch_id
+      in: path
+      value: $steps.submitBatch.outputs.batchId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      deletedId: $response.body#/id
+      deletedType: $response.body#/type
+  outputs:
+    batchId: $steps.submitBatch.outputs.batchId
+    deletedId: $steps.deleteBatch.outputs.deletedId

@@ -1,0 +1,115 @@
+arazzo: 1.0.1
+info:
+  title: Claude Multi-Turn Conversation
+  summary: Send a first user turn, then continue the conversation with a follow-up that includes the assistant's reply.
+  description: >-
+    A two-turn conversation flow. The workflow sends an opening user message,
+    captures the assistant's text reply, and then issues a second request that
+    replays the full conversation — the original user turn, the assistant
+    response, and a new follow-up user turn — so the model has the prior context.
+    This demonstrates how the stateless Messages API is chained into a
+    multi-turn dialogue. Every step spells out its request inline — including
+    the required x-api-key and anthropic-version headers — so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: claudeApi
+  url: ../openapi/claude-messages-api.yml
+  type: openapi
+workflows:
+- workflowId: multi-turn-conversation
+  summary: Chain two Messages API calls into a single multi-turn conversation.
+  description: >-
+    Sends an opening user prompt, then sends a follow-up prompt that includes
+    the prior user and assistant turns so the model continues with full context.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - model
+    - firstPrompt
+    - followUpPrompt
+    properties:
+      apiKey:
+        type: string
+        description: Anthropic API key sent in the x-api-key header.
+      anthropicVersion:
+        type: string
+        description: Value for the required anthropic-version header.
+        default: '2023-06-01'
+      model:
+        type: string
+        description: The model to use for both turns of the conversation.
+      firstPrompt:
+        type: string
+        description: The opening user message.
+      followUpPrompt:
+        type: string
+        description: The follow-up user message sent after the assistant replies.
+      maxTokens:
+        type: integer
+        description: Maximum number of tokens to generate per turn.
+        default: 1024
+  steps:
+  - stepId: openingTurn
+    description: >-
+      Send the opening user message and capture the assistant's reply content
+      so it can be replayed as context in the next turn.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.firstPrompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstMessageId: $response.body#/id
+      assistantContent: $response.body#/content
+      stopReason: $response.body#/stop_reason
+  - stepId: followUpTurn
+    description: >-
+      Send the follow-up user message with the prior user turn and assistant
+      reply included so the model continues the conversation with full context.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.firstPrompt
+        - role: assistant
+          content: $steps.openingTurn.outputs.assistantContent
+        - role: user
+          content: $inputs.followUpPrompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      followUpMessageId: $response.body#/id
+      content: $response.body#/content
+      stopReason: $response.body#/stop_reason
+      usage: $response.body#/usage
+  outputs:
+    firstMessageId: $steps.openingTurn.outputs.firstMessageId
+    followUpMessageId: $steps.followUpTurn.outputs.followUpMessageId
+    content: $steps.followUpTurn.outputs.content
+    usage: $steps.followUpTurn.outputs.usage

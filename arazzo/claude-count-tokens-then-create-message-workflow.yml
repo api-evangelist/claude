@@ -1,0 +1,105 @@
+arazzo: 1.0.1
+info:
+  title: Claude Count Tokens Then Create Message
+  summary: Pre-flight a prompt through token counting before sending it to the Messages API.
+  description: >-
+    A budget-aware completion flow. The workflow first counts the number of
+    input tokens a prompt would consume using the count_tokens endpoint, then
+    sends the same prompt to the Messages API to generate a response. Counting
+    first lets a caller verify the request fits within a model's context window
+    and estimate cost before incurring generation charges. Every step spells
+    out its request inline — including the required x-api-key and
+    anthropic-version headers — so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: claudeApi
+  url: ../openapi/claude-messages-api.yml
+  type: openapi
+workflows:
+- workflowId: count-tokens-then-create-message
+  summary: Count input tokens for a prompt, then generate a message with the same prompt.
+  description: >-
+    Counts the input tokens for a model and prompt, then sends the prompt to the
+    Messages API, returning both the pre-flight token count and the generated
+    message usage.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - model
+    - prompt
+    properties:
+      apiKey:
+        type: string
+        description: Anthropic API key sent in the x-api-key header.
+      anthropicVersion:
+        type: string
+        description: Value for the required anthropic-version header.
+        default: '2023-06-01'
+      model:
+        type: string
+        description: The model to count tokens for and to generate the message with.
+      prompt:
+        type: string
+        description: The user prompt to count and send.
+      maxTokens:
+        type: integer
+        description: Maximum number of tokens to generate in the response.
+        default: 1024
+  steps:
+  - stepId: countTokens
+    description: >-
+      Count the number of input tokens the prompt will consume for the chosen
+      model, without creating a message.
+    operationId: countMessageTokens
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        messages:
+        - role: user
+          content: $inputs.prompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      inputTokens: $response.body#/input_tokens
+  - stepId: createMessage
+    description: >-
+      Send the same prompt to the Messages API now that its token footprint is
+      known, capturing the generated content and usage.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.prompt
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageId: $response.body#/id
+      content: $response.body#/content
+      stopReason: $response.body#/stop_reason
+      usage: $response.body#/usage
+  outputs:
+    estimatedInputTokens: $steps.countTokens.outputs.inputTokens
+    messageId: $steps.createMessage.outputs.messageId
+    content: $steps.createMessage.outputs.content
+    usage: $steps.createMessage.outputs.usage

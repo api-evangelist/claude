@@ -1,0 +1,145 @@
+arazzo: 1.0.1
+info:
+  title: Claude Tool Use Round Trip
+  summary: Offer the model a tool, capture its tool_use request, then return a tool_result for a final answer.
+  description: >-
+    A complete tool-use round trip. The workflow sends a prompt along with a
+    tool definition and a tool_choice that forces the model to call the tool.
+    The model responds with a tool_use block requesting the tool. The workflow
+    then sends a second request that replays the conversation and supplies a
+    tool_result block containing the tool's output, letting the model produce a
+    final natural-language answer grounded in that result. Every step spells out
+    its request inline — including the required x-api-key and anthropic-version
+    headers — so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: claudeApi
+  url: ../openapi/claude-messages-api.yml
+  type: openapi
+workflows:
+- workflowId: tool-use-round-trip
+  summary: Drive a single tool-use cycle from tool_use request to grounded final answer.
+  description: >-
+    Sends a prompt with a tool definition, captures the model's tool_use id and
+    name, then returns a tool_result so the model can answer using the tool
+    output.
+  inputs:
+    type: object
+    required:
+    - apiKey
+    - model
+    - prompt
+    - toolName
+    - toolDescription
+    - toolInputSchema
+    - toolResult
+    properties:
+      apiKey:
+        type: string
+        description: Anthropic API key sent in the x-api-key header.
+      anthropicVersion:
+        type: string
+        description: Value for the required anthropic-version header.
+        default: '2023-06-01'
+      model:
+        type: string
+        description: The model to use for both turns.
+      prompt:
+        type: string
+        description: The user prompt that should trigger the tool call.
+      toolName:
+        type: string
+        description: The name of the tool offered to the model.
+      toolDescription:
+        type: string
+        description: A description of what the tool does and when to use it.
+      toolInputSchema:
+        type: object
+        description: JSON Schema object describing the tool's input parameters.
+      toolResult:
+        type: string
+        description: The output of the tool, returned to the model as a tool_result.
+      maxTokens:
+        type: integer
+        description: Maximum number of tokens to generate per turn.
+        default: 1024
+  steps:
+  - stepId: requestToolUse
+    description: >-
+      Send the prompt with a tool definition and force tool use, capturing the
+      tool_use block id and name from the model's response.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.prompt
+        tools:
+        - name: $inputs.toolName
+          description: $inputs.toolDescription
+          input_schema: $inputs.toolInputSchema
+        tool_choice:
+          type: tool
+          name: $inputs.toolName
+    successCriteria:
+    - condition: $statusCode == 200
+    - condition: $response.body#/stop_reason == "tool_use"
+    outputs:
+      assistantContent: $response.body#/content
+      toolUseId: $response.body#/content/0/id
+      toolUseName: $response.body#/content/0/name
+  - stepId: returnToolResult
+    description: >-
+      Replay the conversation and supply the tool output as a tool_result block
+      keyed to the captured tool_use id so the model can produce a final answer.
+    operationId: createMessage
+    parameters:
+    - name: x-api-key
+      in: header
+      value: $inputs.apiKey
+    - name: anthropic-version
+      in: header
+      value: $inputs.anthropicVersion
+    requestBody:
+      contentType: application/json
+      payload:
+        model: $inputs.model
+        max_tokens: $inputs.maxTokens
+        messages:
+        - role: user
+          content: $inputs.prompt
+        - role: assistant
+          content: $steps.requestToolUse.outputs.assistantContent
+        - role: user
+          content:
+          - type: tool_result
+            tool_use_id: $steps.requestToolUse.outputs.toolUseId
+            content: $inputs.toolResult
+        tools:
+        - name: $inputs.toolName
+          description: $inputs.toolDescription
+          input_schema: $inputs.toolInputSchema
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      messageId: $response.body#/id
+      content: $response.body#/content
+      stopReason: $response.body#/stop_reason
+      usage: $response.body#/usage
+  outputs:
+    toolUseId: $steps.requestToolUse.outputs.toolUseId
+    toolUseName: $steps.requestToolUse.outputs.toolUseName
+    messageId: $steps.returnToolResult.outputs.messageId
+    content: $steps.returnToolResult.outputs.content
+    usage: $steps.returnToolResult.outputs.usage
