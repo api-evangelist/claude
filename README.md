@@ -1,210 +1,237 @@
 # Claude (claude)
+
 Anthropic's Claude AI assistant API for natural language processing and conversation.
 
-**URL:** [Visit APIs.json URL](https://www.anthropic.com)
+**APIs.json:** [https://www.anthropic.com](https://www.anthropic.com)
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Tags
 
-## Tags:
-
- - Artificial Intelligence, Chatbot, Conversational AI, Generative AI, Large Language Models, Machine Learning, Natural Language Processing
+- Artificial Intelligence
+- Chatbot
+- Conversational AI
+- Generative AI
+- Large Language Models
+- Machine Learning
+- Natural Language Processing
 
 ## Timestamps
 
 - **Created:** 2024
-- **Modified:** 2026-04-18
+- **Modified:** 2026-05-19
 
 ## APIs
 
 ### Claude Messages API
+
 Primary API for sending messages to Claude and receiving responses.
 
-**Human URL:** [https://docs.anthropic.com/en/api/messages](https://docs.anthropic.com/en/api/messages)
+- **Human URL:** [https://docs.anthropic.com/en/api/messages](https://docs.anthropic.com/en/api/messages)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - AI, Conversational AI, Large Language Models, Natural Language Processing
+- AI
+- Conversational AI
+- Large Language Models
+- Natural Language Processing
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/messages)
-- [OpenAPI](openapi/claude-messages-api.yml)
+- [OpenAPI](openapi/claude-messages-api.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 - [Authentication](https://docs.anthropic.com/claude/reference/authentication)
 - [Pricing](https://www.anthropic.com/pricing)
-- [RateLimits](https://docs.anthropic.com/en/api/rate-limits)
-- [GettingStarted](https://docs.anthropic.com/en/api/getting-started)
-- [Python SDK](https://github.com/anthropics/anthropic-sdk-python)
-- [TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript)
+- [Rate Limits](https://docs.anthropic.com/en/api/rate-limits)
+- [Getting Started](https://docs.anthropic.com/en/api/getting-started)
+- [JSON Schema](json-schema/claude-message-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-create-message-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-message-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-error-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-usage-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-tool-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-tool-use-block-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-content-block-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-text-block-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-thinking-block-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-token-count-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-count-tokens-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-metadata-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-output-config-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-thinking-config-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-tool-choice-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-cache-control-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-content-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-text-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-image-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-document-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-tool-use-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-tool-result-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-thinking-block-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-message-param-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-message-batch-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-message-batch-list-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-message-batch-result-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-create-message-batch-request-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-batch-request-item-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-deleted-message-batch-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-model-info-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-messages-model-list-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Schema](json-schema/claude-tool-use-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON-LD](json-ld/claude-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [JSON-LD](json-ld/claude-messages-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [SDK](https://github.com/anthropics/anthropic-sdk-python)
+- [SDK](https://github.com/anthropics/anthropic-sdk-typescript)
 
 ### Claude Message Batches API
+
 API for asynchronously processing large volumes of message requests at reduced cost with 50 percent discount.
 
-**Human URL:** [https://docs.anthropic.com/en/api/creating-message-batches](https://docs.anthropic.com/en/api/creating-message-batches)
+- **Human URL:** [https://docs.anthropic.com/en/api/creating-message-batches](https://docs.anthropic.com/en/api/creating-message-batches)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - AI, Asynchronous, Batch Processing, Large Language Models
+- AI
+- Asynchronous
+- Batch Processing
+- Large Language Models
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/creating-message-batches)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Claude Models API
+
 API for listing and retrieving metadata about available Claude models including capabilities and context windows.
 
-**Human URL:** [https://docs.anthropic.com/en/api/models-list](https://docs.anthropic.com/en/api/models-list)
+- **Human URL:** [https://docs.anthropic.com/en/api/models-list](https://docs.anthropic.com/en/api/models-list)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - AI, Large Language Models, Models
+- AI
+- Large Language Models
+- Models
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/models-list)
 - [Models](https://docs.anthropic.com/en/docs/about-claude/models)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Claude Files API
+
 API for uploading and managing files to reference in Claude API requests without re-uploading content each time.
 
-**Human URL:** [https://docs.anthropic.com/en/docs/build-with-claude/files](https://docs.anthropic.com/en/docs/build-with-claude/files)
+- **Human URL:** [https://docs.anthropic.com/en/docs/build-with-claude/files](https://docs.anthropic.com/en/docs/build-with-claude/files)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - AI, Document Processing, File Management, Files
+- AI
+- Document Processing
+- File Management
+- Files
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/docs/build-with-claude/files)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Claude Admin API
+
 API for programmatically managing organization resources including members workspaces API keys and invites.
 
-**Human URL:** [https://docs.anthropic.com/en/api/administration-api](https://docs.anthropic.com/en/api/administration-api)
+- **Human URL:** [https://docs.anthropic.com/en/api/administration-api](https://docs.anthropic.com/en/api/administration-api)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - Administration, AI, API Keys, Organization Management, Workspaces
+- Administration
+- AI
+- API Keys
+- Organization Management
+- Workspaces
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/administration-api)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Claude Usage and Cost API
+
 API for tracking token consumption and costs across your organization with breakdowns by model workspace and service tier.
 
-**Human URL:** [https://docs.anthropic.com/en/api/usage-cost-api](https://docs.anthropic.com/en/api/usage-cost-api)
+- **Human URL:** [https://docs.anthropic.com/en/api/usage-cost-api](https://docs.anthropic.com/en/api/usage-cost-api)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - AI, Analytics, Cost Tracking, Usage
+- AI
+- Analytics
+- Cost Tracking
+- Usage
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/usage-cost-api)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ### Claude Text Completions API
+
 Legacy API for generating text completions - deprecated in favor of the Messages API.
 
-**Human URL:** [https://docs.anthropic.com/en/api/complete](https://docs.anthropic.com/en/api/complete)
+- **Human URL:** [https://docs.anthropic.com/en/api/complete](https://docs.anthropic.com/en/api/complete)
+- **Base URL:** `https://api.anthropic.com/v1`
 
-#### Tags:
+#### Tags
 
- - AI, Large Language Models, Legacy, Text Completion
+- AI
+- Large Language Models
+- Legacy
+- Text Completion
 
 #### Properties
 
 - [Documentation](https://docs.anthropic.com/en/api/complete)
+- [Postman Collection](collections/claude-messages-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/claude-messages-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
 ## Common Properties
 
+- [Arazzo Workflows](arazzo/) — [Arazzo Specification](https://spec.openapis.org/arazzo/latest.html)
+- [LinkedIn](https://www.linkedin.com/showcase/claude)
 - [Portal](https://console.anthropic.com)
 - [Documentation](https://docs.anthropic.com)
-- [GettingStarted](https://docs.anthropic.com/en/docs/get-started)
+- [Getting Started](https://docs.anthropic.com/en/docs/get-started)
 - [Pricing](https://www.anthropic.com/pricing)
-- [RateLimits](https://docs.anthropic.com/en/api/rate-limits)
+- [Rate Limits](https://docs.anthropic.com/en/api/rate-limits)
 - [Authentication](https://docs.anthropic.com/en/api/getting-started)
-- [ChangeLog](https://docs.anthropic.com/en/release-notes/api)
-- [StatusPage](https://status.anthropic.com)
+- [Changelog](https://docs.anthropic.com/en/release-notes/api)
+- [Status Page](https://status.anthropic.com)
 - [Blog](https://www.anthropic.com/news)
 - [Support](https://support.anthropic.com)
-- [TermsOfService](https://www.anthropic.com/legal/commercial-terms)
-- [PrivacyPolicy](https://www.anthropic.com/legal/privacy)
-- [GitHubOrganization](https://github.com/anthropics)
-
-## Features
-
-| Name | Description |
-|------|-------------|
-| Multi-Turn Conversations | Maintain context across multiple message exchanges for natural dialogue interactions. |
-| Tool Use | Enable Claude to call external tools and functions to perform actions and retrieve data. |
-| Vision | Process and analyze images alongside text for multimodal understanding. |
-| Extended Thinking | Allow Claude to reason step-by-step for complex tasks with visible thinking process. |
-| Streaming Responses | Receive responses in real-time via server-sent events for responsive user experiences. |
-| Message Batches | Process large volumes of requests asynchronously at 50 percent reduced cost. |
-| Token Counting | Pre-calculate token usage for messages including tools, images, and documents. |
-
-## Use Cases
-
-| Name | Description |
-|------|-------------|
-| AI-Powered Chat Applications | Build conversational interfaces with context-aware responses and tool integration. |
-| Content Generation | Generate, edit, and transform text content for marketing, documentation, and creative writing. |
-| Code Assistance | Use Claude for code generation, review, debugging, and technical documentation. |
-| Document Analysis | Extract information, summarize, and answer questions about documents and images. |
-| Batch Processing | Process large datasets of prompts efficiently using the Message Batches API. |
-
-## Integrations
-
-| Name | Description |
-|------|-------------|
-| Amazon Bedrock | Access Claude models through AWS Bedrock for enterprise deployment with AWS infrastructure. |
-| Google Cloud Vertex AI | Use Claude on Google Cloud through Vertex AI integration. |
-| LangChain | Integrate Claude into LangChain pipelines for advanced AI application development. |
-| MCP Protocol | Connect Claude to external data sources and tools via the Model Context Protocol. |
-
-## Artifacts
-
-Machine-readable API specifications organized by format.
-
-### OpenAPI
-
-- [Claude Messages API OpenAPI](openapi/claude-messages-api.yml)
-
-### JSON Schema
-
-- [Message Schema](json-schema/claude-message-schema.json)
-- [Create Message Request Schema](json-schema/claude-messages-create-message-request-schema.json)
-- [Tool Use Schema](json-schema/claude-tool-use-schema.json)
-- [Error Schema](json-schema/claude-messages-error-schema.json)
-
-### JSON-LD
-
-- [Claude Context](json-ld/claude-context.jsonld)
-
-## Capabilities
-
-Naftiko capabilities organized as shared per-API definitions composed into customer-facing workflows.
-
-### Shared Per-API Definitions
-
-- [Claude Messages API](capabilities/shared/claude-messages.yaml) — 10 operations for message creation, batches, and model discovery
-
-### Workflow Capabilities
-
-| Workflow | APIs Combined | Tools | Persona |
-|----------|--------------|-------|---------|
-| [AI Messaging](capabilities/ai-messaging.yaml) | Claude Messages API | 10 | AI Application Developer |
-
-## Vocabulary
-
-- [Claude Vocabulary](vocabulary/claude-vocabulary.yaml)
-
-## Rules
-
-- [Claude Spectral Rules](rules/claude-spectral-rules.yml)
+- [Terms of Service](https://www.anthropic.com/legal/commercial-terms)
+- [Privacy Policy](https://www.anthropic.com/legal/privacy)
+- [GitHub Organization](https://github.com/anthropics)
+- [Spectral Rules](rules/claude-spectral-rules.yml)
+- [Vocabulary](vocabulary/claude-vocabulary.yaml)
+- [Features](undefined)
+- [Use Cases](undefined)
+- [Integrations](undefined)
+- [M C P Server](https://github.com/anthropics/claude-ai-mcp)
 
 ## Maintainers
 
-**FN:** Kin Lane
-
 **Email:** kin@apievangelist.com
+**URL:** https://apievangelist.com
+**Email:** support@anthropic.com
+**URL:** https://www.anthropic.com
