@@ -1,0 +1,344 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Claude Messages API",
+    "version": "Wed May 31 2023 20:00:00 GMT-0400 (Eastern Daylight Time)"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a structured list of input messages with text and/or image content, and the model will generate the next message in the conversation. The Messages API can be used for single queries or multi-turn conversations."
+        },
+        {
+          "info": {
+            "name": "Count Message Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages/count_tokens",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Count the number of tokens in a message, including tools, images, and documents, without creating it."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Message Batches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Message Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/messages/batches",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page."
+              }
+            ]
+          },
+          "docs": "List all message batches within a workspace."
+        },
+        {
+          "info": {
+            "name": "Create a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages/batches",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a batch of message creation requests for asynchronous processing. Batches begin processing immediately and can take up to 24 hours to complete. Results are available at a 50 percent discount compared to standard API calls."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Retrieve the status and details of a specific message batch."
+        },
+        {
+          "info": {
+            "name": "Delete a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Delete a completed message batch. The batch must have a processing_status of ended before it can be deleted."
+        },
+        {
+          "info": {
+            "name": "Retrieve Message Batch Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id/results",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Stream the results of a completed message batch as a JSONL file. Each line contains a JSON object with a custom_id and result."
+        },
+        {
+          "info": {
+            "name": "Cancel a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id/cancel",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Cancel an in-progress message batch. Cancellation is asynchronous and already-processed requests cannot be undone."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/models",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page."
+              }
+            ]
+          },
+          "docs": "List available models. The response can be used to determine which models are available for use in the API. More recently released models are listed first."
+        },
+        {
+          "info": {
+            "name": "Get a Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/models/:model_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "claude-sonnet-4-6",
+                "type": "path",
+                "description": "The unique identifier of the model to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieve metadata for a specific Claude model by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
