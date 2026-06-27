@@ -9,13 +9,20 @@
       "method": "none"
     },
     {
+      "source": "https://status.claude.com/history.atom",
+      "feed_url": "https://status.claude.com/history.atom",
+      "title": "",
+      "saved": 5,
+      "method": "feed"
+    },
+    {
       "source": "https://status.anthropic.com",
       "feed_url": "https://status.claude.com/history.atom",
       "title": "",
-      "saved": 7,
+      "saved": 0,
       "method": "discovered"
     }
   ],
-  "post_count": 21,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 39,
+  "fetched": "2026-06-27T12:03:07Z"
 }

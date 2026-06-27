@@ -108,10 +108,10 @@ apis:
         url: json-ld/claude-context.jsonld
       - type: JSONLD
         url: json-ld/claude-messages-context.jsonld
-      - type: SDK
+      - type: SDKs
         url: https://github.com/anthropics/anthropic-sdk-python
         title: Python SDK
-      - type: SDK
+      - type: SDKs
         url: https://github.com/anthropics/anthropic-sdk-typescript
         title: TypeScript SDK
     contact:
@@ -363,33 +363,30 @@ apis:
 common:
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/claude/overview
-  - type: ArazzoWorkflows
-    url: arazzo/
-    workflows:
-      - url: arazzo/claude-analyze-document-from-url-workflow.yml
-        name: Claude Analyze Document From URL
-        summary: Count tokens for a URL-referenced document, then ask Claude a question about it.
-      - url: arazzo/claude-batch-process-and-retrieve-results-workflow.yml
-        name: Claude Batch Process and Retrieve Results
-        summary: Submit a message batch, poll until it ends, then retrieve the JSONL results.
-      - url: arazzo/claude-cancel-and-delete-batch-workflow.yml
-        name: Claude Cancel and Delete Batch
-        summary: Submit a batch, request cancellation, poll until it ends, then delete it.
-      - url: arazzo/claude-count-tokens-then-create-message-workflow.yml
-        name: Claude Count Tokens Then Create Message
-        summary: Pre-flight a prompt through token counting before sending it to the Messages API.
-      - url: arazzo/claude-find-latest-batch-results-workflow.yml
-        name: Claude Find Latest Batch Results
-        summary: List recent message batches, inspect the most recent one, and retrieve its results if it has ended.
-      - url: arazzo/claude-multi-turn-conversation-workflow.yml
-        name: Claude Multi-Turn Conversation
-        summary: Send a first user turn, then continue the conversation with a follow-up that includes the assistant's reply.
-      - url: arazzo/claude-select-model-and-create-message-workflow.yml
-        name: Claude Select Model and Create Message
-        summary: Discover an available Claude model, confirm its metadata, then generate a message with it.
-      - url: arazzo/claude-tool-use-round-trip-workflow.yml
-        name: Claude Tool Use Round Trip
-        summary: Offer the model a tool, capture its tool_use request, then return a tool_result for a final answer.
+  - type: Arazzo
+    url: arazzo/claude-analyze-document-from-url-workflow.yml
+    name: Claude Analyze Document From URL
+  - type: Arazzo
+    url: arazzo/claude-batch-process-and-retrieve-results-workflow.yml
+    name: Claude Batch Process and Retrieve Results
+  - type: Arazzo
+    url: arazzo/claude-cancel-and-delete-batch-workflow.yml
+    name: Claude Cancel and Delete Batch
+  - type: Arazzo
+    url: arazzo/claude-count-tokens-then-create-message-workflow.yml
+    name: Claude Count Tokens Then Create Message
+  - type: Arazzo
+    url: arazzo/claude-find-latest-batch-results-workflow.yml
+    name: Claude Find Latest Batch Results
+  - type: Arazzo
+    url: arazzo/claude-multi-turn-conversation-workflow.yml
+    name: Claude Multi-Turn Conversation
+  - type: Arazzo
+    url: arazzo/claude-select-model-and-create-message-workflow.yml
+    name: Claude Select Model and Create Message
+  - type: Arazzo
+    url: arazzo/claude-tool-use-round-trip-workflow.yml
+    name: Claude Tool Use Round Trip
   - type: LinkedIn
     url: https://www.linkedin.com/showcase/claude
   - type: Portal
