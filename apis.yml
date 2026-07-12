@@ -361,6 +361,12 @@ apis:
         path: /complete
         description: Generate a text completion from Claude (legacy - use Messages API instead)
 common:
+  - type: VulnerabilityDisclosure
+    url: security/claude-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/claude-domain-security.yml
+  - type: Authentication
+    url: authentication/claude-authentication.yml
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/claude/overview
   - type: Arazzo

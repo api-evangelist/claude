@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/claude-messages-api.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  description: API key for authenticating requests. Obtain from the Anthropic Console at https://console.anthropic.com
+  sources:
+  - openapi/claude-messages-api.yml
