@@ -361,6 +361,8 @@ apis:
         path: /complete
         description: Generate a text completion from Claude (legacy - use Messages API instead)
 common:
+  - type: AgenticAccess
+    url: agentic-access/claude-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/claude-vulnerability-disclosure.yml
   - type: DomainSecurity
