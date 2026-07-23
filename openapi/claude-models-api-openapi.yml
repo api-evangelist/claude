@@ -1,0 +1,240 @@
+openapi: 3.1.0
+info:
+  title: Claude Messages Message Batches Models API
+  description: Anthropic's Claude Messages API for sending messages to Claude models and receiving responses. Includes endpoints for creating messages, counting tokens, managing message batches, and listing available models.
+  version: 2023-06-01
+  termsOfService: https://www.anthropic.com/legal/commercial-terms
+  contact:
+    name: Anthropic Support
+    url: https://support.anthropic.com
+    email: support@anthropic.com
+  license:
+    name: Anthropic API Terms
+    url: https://www.anthropic.com/legal/commercial-terms
+servers:
+- url: https://api.anthropic.com/v1
+  description: Anthropic Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Models
+  description: List and retrieve available Claude models
+  externalDocs:
+    url: https://docs.anthropic.com/en/api/models-list
+paths:
+  /models:
+    get:
+      operationId: listModels
+      summary: List Models
+      description: List available models. The response can be used to determine which models are available for use in the API. More recently released models are listed first.
+      tags:
+      - Models
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - name: after_id
+        in: query
+        description: ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object.
+        schema:
+          type: string
+      - name: before_id
+        in: query
+        description: ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of items to return per page.
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+          maximum: 1000
+      responses:
+        '200':
+          description: List of available models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /models/{model_id}:
+    get:
+      operationId: getModel
+      summary: Get a Model
+      description: Retrieve metadata for a specific Claude model by its ID.
+      tags:
+      - Models
+      parameters:
+      - $ref: '#/components/parameters/AnthropicVersion'
+      - $ref: '#/components/parameters/AnthropicBeta'
+      - name: model_id
+        in: path
+        required: true
+        description: The unique identifier of the model to retrieve.
+        schema:
+          type: string
+        example: claude-sonnet-4-6
+      responses:
+        '200':
+          description: Model metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ModelInfo:
+      type: object
+      description: Metadata about a Claude model.
+      required:
+      - id
+      - type
+      - display_name
+      - created_at
+      properties:
+        id:
+          type: string
+          description: Unique model identifier.
+          example: claude-sonnet-4-6
+        type:
+          type: string
+          description: Object type. Always "model" for model objects.
+          const: model
+          example: example_value
+        display_name:
+          type: string
+          description: A human-readable name for the model.
+          example: Claude Sonnet 4.6
+        created_at:
+          type: string
+          format: date-time
+          description: RFC 3339 datetime string representing when the model was released.
+          example: '2026-01-15T10:30:00Z'
+    ModelList:
+      type: object
+      description: Paginated list of available models.
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelInfo'
+          example: []
+        has_more:
+          type: boolean
+          description: Whether there are more results available.
+          example: true
+        first_id:
+          type: string
+          description: ID of the first item. Use as before_id for the previous page.
+          nullable: true
+          example: '500123'
+        last_id:
+          type: string
+          description: ID of the last item. Use as after_id for the next page.
+          nullable: true
+          example: '500123'
+    Error:
+      type: object
+      description: An error response from the API.
+      required:
+      - type
+      - error
+      properties:
+        type:
+          type: string
+          const: error
+          example: example_value
+        error:
+          type: object
+          required:
+          - type
+          - message
+          properties:
+            type:
+              type: string
+              description: The type of error.
+              enum:
+              - invalid_request_error
+              - authentication_error
+              - permission_error
+              - not_found_error
+              - rate_limit_error
+              - api_error
+              - overloaded_error
+            message:
+              type: string
+              description: A human-readable description of the error.
+          example: example_value
+  parameters:
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: false
+      description: Optional header to specify beta version(s) you want to use.
+      schema:
+        type: array
+        items:
+          type: string
+    AnthropicVersion:
+      name: anthropic-version
+      in: header
+      required: true
+      description: The version of the Anthropic API to use.
+      schema:
+        type: string
+        default: '2023-06-01'
+      example: '2023-06-01'
+  responses:
+    Unauthorized:
+      description: Authentication failed. Verify your API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit exceeded. Retry after the period indicated in the response headers.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: An unexpected error occurred on the server.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key for authenticating requests. Obtain from the Anthropic Console at https://console.anthropic.com
+externalDocs:
+  description: Anthropic API Documentation
+  url: https://docs.anthropic.com/en/api/messages
