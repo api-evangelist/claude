@@ -1,0 +1,18 @@
+{
+  "provider": "claude",
+  "sources": [
+    "claude-message-batches-api-openapi.yml",
+    "claude-messages-api-openapi.yml",
+    "claude-models-api-openapi.yml"
+  ],
+  "outputs": [
+    "claude-message-batches-api-openapi.yml",
+    "claude-messages-api-openapi.yml",
+    "claude-models-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
