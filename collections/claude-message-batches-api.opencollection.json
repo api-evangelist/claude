@@ -1,0 +1,208 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Claude Messages Message Batches API",
+    "version": "2023-06-01"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Message Batches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Message Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/messages/batches",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "after_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately after this object."
+              },
+              {
+                "name": "before_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the object to use as a cursor for pagination. Returns the page of results immediately before this object."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page."
+              }
+            ]
+          },
+          "docs": "List all message batches within a workspace."
+        },
+        {
+          "info": {
+            "name": "Create a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages/batches",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a batch of message creation requests for asynchronous processing. Batches begin processing immediately and can take up to 24 hours to complete. Results are available at a 50 percent discount compared to standard API calls."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Retrieve the status and details of a specific message batch."
+        },
+        {
+          "info": {
+            "name": "Delete a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Delete a completed message batch. The batch must have a processing_status of ended before it can be deleted."
+        },
+        {
+          "info": {
+            "name": "Retrieve Message Batch Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id/results",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Stream the results of a completed message batch as a JSONL file. Each line contains a JSON object with a custom_id and result."
+        },
+        {
+          "info": {
+            "name": "Cancel a Message Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.anthropic.com/v1/messages/batches/:message_batch_id/cancel",
+            "headers": [
+              {
+                "name": "anthropic-version",
+                "value": "2023-06-01"
+              },
+              {
+                "name": "anthropic-beta",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_batch_id",
+                "value": "msgbatch_01HkcTjaV5uDC8jWR4ZsDV8d",
+                "type": "path",
+                "description": "The unique identifier of the message batch."
+              }
+            ]
+          },
+          "docs": "Cancel an in-progress message batch. Cancellation is asynchronous and already-processed requests cannot be undone."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
