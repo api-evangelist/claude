@@ -20,6 +20,14 @@ created: '2024'
 modified: '2026-05-19'
 tags:
   - Artificial Intelligence
+  - Chatbots
+  - Conversational AI
+  - Generative AI
+  - Large Language Models
+  - Machine-Learning
+  - Natural Language Processing
+tags_raw:
+  - Artificial Intelligence
   - Chatbot
   - Conversational AI
   - Generative AI
@@ -35,6 +43,11 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/creating-message-batches
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Artificial Intelligence
+  - Asynchronous
+  - Batch Processing
+  - Large Language Models
+  tags_raw:
   - AI
   - Asynchronous
   - Batch Processing
@@ -78,6 +91,10 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/models-list
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Artificial Intelligence
+  - Large Language Models
+  - Models
+  tags_raw:
   - AI
   - Large Language Models
   - Models
@@ -106,6 +123,11 @@ apis:
   humanURL: https://docs.anthropic.com/en/docs/build-with-claude/files
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Artificial Intelligence
+  - Document Processing
+  - File Management
+  - File
+  tags_raw:
   - AI
   - Document Processing
   - File Management
@@ -145,6 +167,12 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/administration-api
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Administration
+  - Artificial Intelligence
+  - APIKeys
+  - Organization Management
+  - Workspaces
+  tags_raw:
   - Administration
   - AI
   - API Keys
@@ -225,6 +253,11 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/usage-cost-api
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Artificial Intelligence
+  - Analytics
+  - Cost Tracking
+  - Usage
+  tags_raw:
   - AI
   - Analytics
   - Cost Tracking
@@ -252,6 +285,11 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/complete
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Artificial Intelligence
+  - Large Language Models
+  - Legacy
+  - Text Completion
+  tags_raw:
   - AI
   - Large Language Models
   - Legacy
@@ -369,6 +407,8 @@ apis:
   humanURL: https://docs.anthropic.com/en/api/messages
   baseURL: https://api.anthropic.com/v1
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
