@@ -14,8 +14,8 @@ info:
     opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: claudeApi
-  url: ../openapi/claude-messages-api.yml
+- name: messageBatchesApi
+  url: ../openapi/claude-message-batches-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: batch-process-and-retrieve-results

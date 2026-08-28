@@ -15,8 +15,8 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: claudeApi
-  url: ../openapi/claude-messages-api.yml
+- name: messagesApi
+  url: ../openapi/claude-messages-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: analyze-document-from-url
