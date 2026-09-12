@@ -609,6 +609,8 @@ apis:
   - type: SDKs
     url: https://github.com/anthropics/anthropic-sdk-typescript
 common:
+  - type: Website
+    url: https://www.anthropic.com/
   - type: AgenticAccess
     url: agentic-access/claude-agentic-access.yml
   - type: VulnerabilityDisclosure
