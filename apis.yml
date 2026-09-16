@@ -52,8 +52,9 @@ tags_raw:
 - Natural Language Processing
 apis:
 - name: Claude Message Batches API
-  description: API for asynchronously processing large volumes of message requests at reduced cost with
-    50 percent discount.
+  description: >-
+    API for asynchronously processing large volumes of message requests at reduced cost with 50 percent
+    discount.
   image: https://www.anthropic.com/images/icons/anthropic-icon.png
   humanURL: https://docs.anthropic.com/en/api/creating-message-batches
   baseURL: https://api.anthropic.com/v1
@@ -99,8 +100,9 @@ apis:
     path: /messages/batches/{message_batch_id}
     description: Delete a completed message batch
 - name: Claude Models API
-  description: API for listing and retrieving metadata about available Claude models including capabilities
-    and context windows.
+  description: >-
+    API for listing and retrieving metadata about available Claude models including capabilities and context
+    windows.
   image: https://www.anthropic.com/images/icons/anthropic-icon.png
   humanURL: https://docs.anthropic.com/en/api/models-list
   baseURL: https://api.anthropic.com/v1
@@ -130,8 +132,9 @@ apis:
     path: /models/{model_id}
     description: Retrieve metadata for a specific Claude model
 - name: Claude Files API
-  description: API for uploading and managing files to reference in Claude API requests without re-uploading
-    content each time.
+  description: >-
+    API for uploading and managing files to reference in Claude API requests without re-uploading content
+    each time.
   image: https://www.anthropic.com/images/icons/anthropic-icon.png
   humanURL: https://docs.anthropic.com/en/docs/build-with-claude/files
   baseURL: https://api.anthropic.com/v1
@@ -173,8 +176,9 @@ apis:
     path: /files/{file_id}
     description: Delete an uploaded file
 - name: Claude Admin API
-  description: API for programmatically managing organization resources including members workspaces API
-    keys and invites.
+  description: >-
+    API for programmatically managing organization resources including members workspaces API keys and
+    invites.
   image: https://www.anthropic.com/images/icons/anthropic-icon.png
   humanURL: https://docs.anthropic.com/en/api/administration-api
   baseURL: https://api.anthropic.com/v1
@@ -258,8 +262,9 @@ apis:
     path: /organizations/api_keys/{api_key_id}
     description: Update an API key name or status
 - name: Claude Usage and Cost API
-  description: API for tracking token consumption and costs across your organization with breakdowns by
-    model workspace and service tier.
+  description: >-
+    API for tracking token consumption and costs across your organization with breakdowns by model workspace
+    and service tier.
   image: https://www.anthropic.com/images/icons/anthropic-icon.png
   humanURL: https://docs.anthropic.com/en/api/usage-cost-api
   baseURL: https://api.anthropic.com/v1
@@ -287,8 +292,9 @@ apis:
   - name: Get Cost Report
     method: GET
     path: /organizations/cost_report
-    description: Retrieve service-level cost breakdowns in USD including token usage web search and code
-      execution costs
+    description: >-
+      Retrieve service-level cost breakdowns in USD including token usage web search and code execution
+      costs
 - name: Claude Text Completions API
   description: Legacy API for generating text completions - deprecated in favor of the Messages API.
   image: https://www.anthropic.com/images/icons/anthropic-icon.png
@@ -605,23 +611,6 @@ apis:
     url: https://github.com/anthropics/anthropic-sdk-python
   - type: SDKs
     url: https://github.com/anthropics/anthropic-sdk-typescript
-- name: Anthropic Claude Token Counting API
-  description: Count tokens for a prospective Messages request.
-  humanURL: https://docs.anthropic.com/en/api/messages
-  baseURL: https://api.anthropic.com
-  tags:
-  - Token Counting
-  properties:
-  - type: OpenAPI
-    url: openapi/anthropic-claude-token-counting-api-openapi.yml
-  - type: Documentation
-    url: https://docs.anthropic.com/en/api/messages
-  - type: APIReference
-    url: https://docs.anthropic.com/en/api/getting-started
-  - type: AsyncAPI
-    url: asyncapi/anthropic-claude-asyncapi.yml
-  - type: GettingStarted
-    url: https://docs.anthropic.com/en/api/getting-started
 common:
 - type: Website
   url: https://www.anthropic.com/
