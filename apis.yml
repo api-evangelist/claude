@@ -39,7 +39,7 @@ tags:
 - Chatbots
 - Conversational AI
 - Generative AI
-- Large Language Models
+- LLM
 - Machine-Learning
 - Natural Language Processing
 tags_raw:
@@ -62,7 +62,7 @@ apis:
   - Artificial Intelligence
   - Asynchronous
   - Batch Processing
-  - Large Language Models
+  - LLM
   tags_raw:
   - AI
   - Asynchronous
@@ -108,7 +108,7 @@ apis:
   baseURL: https://api.anthropic.com/v1
   tags:
   - Artificial Intelligence
-  - Large Language Models
+  - LLM
   - Models
   tags_raw:
   - AI
@@ -187,7 +187,7 @@ apis:
   - Artificial Intelligence
   - APIKeys
   - Organization Management
-  - Workspaces
+  - Workspace
   tags_raw:
   - Administration
   - AI
@@ -302,7 +302,7 @@ apis:
   baseURL: https://api.anthropic.com/v1
   tags:
   - Artificial Intelligence
-  - Large Language Models
+  - LLM
   - Legacy
   - Text Completion
   tags_raw:
