@@ -1,9 +1,7 @@
 {
   "provider": "claude",
   "sources": [
-    "claude-message-batches-api-openapi.yml",
-    "claude-messages-api-openapi.yml",
-    "claude-models-api-openapi.yml"
+    "_original/claude-messages-api.yml"
   ],
   "outputs": [
     "claude-message-batches-api-openapi.yml",
@@ -13,6 +11,14 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "claude-messages-api.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "claude-message-batches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "claude-messages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "claude-models-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
