@@ -40,7 +40,7 @@ tags:
 - Conversational AI
 - Generative AI
 - LLM
-- Machine-Learning
+- Machine Learning
 - Natural Language Processing
 tags_raw:
 - Artificial Intelligence
@@ -50,6 +50,7 @@ tags_raw:
 - Large Language Models
 - Machine Learning
 - Natural Language Processing
+- Machine-Learning
 apis:
 - name: Claude Message Batches API
   description: >-
@@ -731,3 +732,5 @@ maintainers:
   url: https://www.anthropic.com
 x-aliases:
 - Anthropic Claude
+x-parent: anthropic
+x-relationship: product

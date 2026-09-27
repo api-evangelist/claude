@@ -205,14 +205,14 @@ components:
               description: A human-readable description of the error.
           example: example_value
   responses:
-    InternalError:
-      description: An unexpected error occurred on the server.
+    Unauthorized:
+      description: Authentication failed. Verify your API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Rate limit exceeded. Retry after the period indicated in the response headers.
+    InternalError:
+      description: An unexpected error occurred on the server.
       content:
         application/json:
           schema:
@@ -223,8 +223,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication failed. Verify your API key.
+    RateLimited:
+      description: Rate limit exceeded. Retry after the period indicated in the response headers.
       content:
         application/json:
           schema:
