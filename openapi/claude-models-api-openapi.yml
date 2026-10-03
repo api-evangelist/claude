@@ -103,15 +103,6 @@ paths:
         dispatcher: FALLBACK
 components:
   parameters:
-    AnthropicBeta:
-      name: anthropic-beta
-      in: header
-      required: false
-      description: Optional header to specify beta version(s) you want to use.
-      schema:
-        type: array
-        items:
-          type: string
     AnthropicVersion:
       name: anthropic-version
       in: header
@@ -121,30 +112,41 @@ components:
         type: string
         default: '2023-06-01'
       example: '2023-06-01'
+    AnthropicBeta:
+      name: anthropic-beta
+      in: header
+      required: false
+      description: Optional header to specify beta version(s) you want to use.
+      schema:
+        type: array
+        items:
+          type: string
+  responses:
+    InternalError:
+      description: An unexpected error occurred on the server.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. Verify your API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit exceeded. Retry after the period indicated in the response headers.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ModelList:
-      type: object
-      description: Paginated list of available models.
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelInfo'
-          example: []
-        has_more:
-          type: boolean
-          description: Whether there are more results available.
-          example: true
-        first_id:
-          type: string
-          description: ID of the first item. Use as before_id for the previous page.
-          nullable: true
-          example: '500123'
-        last_id:
-          type: string
-          description: ID of the last item. Use as after_id for the next page.
-          nullable: true
-          example: '500123'
     ModelInfo:
       type: object
       description: Metadata about a Claude model.
@@ -172,6 +174,29 @@ components:
           format: date-time
           description: RFC 3339 datetime string representing when the model was released.
           example: '2026-01-15T10:30:00Z'
+    ModelList:
+      type: object
+      description: Paginated list of available models.
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelInfo'
+          example: []
+        has_more:
+          type: boolean
+          description: Whether there are more results available.
+          example: true
+        first_id:
+          type: string
+          description: ID of the first item. Use as before_id for the previous page.
+          nullable: true
+          example: '500123'
+        last_id:
+          type: string
+          description: ID of the last item. Use as after_id for the next page.
+          nullable: true
+          example: '500123'
     Error:
       type: object
       description: An error response from the API.
@@ -204,31 +229,6 @@ components:
               type: string
               description: A human-readable description of the error.
           example: example_value
-  responses:
-    Unauthorized:
-      description: Authentication failed. Verify your API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalError:
-      description: An unexpected error occurred on the server.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    RateLimited:
-      description: Rate limit exceeded. Retry after the period indicated in the response headers.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
