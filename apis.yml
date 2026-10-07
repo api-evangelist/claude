@@ -613,6 +613,8 @@ apis:
   - type: SDKs
     url: https://github.com/anthropics/anthropic-sdk-typescript
 common:
+- type: Plans
+  url: plans/claude-plans-pricing.yml
 - type: Website
   url: https://www.anthropic.com/
 - type: AgenticAccess
