@@ -613,6 +613,8 @@ apis:
   - type: SDKs
     url: https://github.com/anthropics/anthropic-sdk-typescript
 common:
+- type: FinOps
+  url: finops/claude-finops.yml
 - type: Plans
   url: plans/claude-plans-pricing.yml
 - type: Website
