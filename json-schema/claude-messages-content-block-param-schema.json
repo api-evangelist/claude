@@ -1,6 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "ContentBlockParam",
-  "type": "object",
-  "description": "A content block in a message request."
-}
