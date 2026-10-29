@@ -64,6 +64,42 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-This profile has been **merged into [anthropic](https://apis.io/providers/anthropic/)** — the two records described the same company, and that one is canonical.
+> **Retired — merged into [Anthropic](https://apis.io/providers/anthropic/).** The two records described the same company, and that one is canonical. Nothing in this repository is maintained any more.
 
-Nothing here is maintained any more. The company's current profile, rating and artifacts are at [apis.io/providers/anthropic/](https://apis.io/providers/anthropic/).
+**Why:** Claude is Anthropic's product; anthropic is canonical and every operation in the three claude split specs (Messages, Message Batches (in the anthropic Messages spec), Models) is already in an anthropic spec, as are the doc-only Files, Admin, Usage and Cost, and Text Completions entries. API and artifact pages map 1:1 to the anthropic equivalents where one exists, otherwise to the provider page. claude stays live as a pointer profile with no APIs. Approved by Kin Lane 2026-10-13.
+
+**Retired:** 2026-10-13
+
+## Where to go now
+
+The current profile, APIs, artifacts and rating for Anthropic are on APIs.io at **[apis.io/providers/anthropic/](https://apis.io/providers/anthropic/)**.
+
+Pages that used to belong to this profile now live at:
+
+- [Anthropic Agentic Access](https://apis.io/agentic-access/anthropic/anthropic-agentic-access/)
+- [Anthropic Organization API](https://apis.io/apis/anthropic/anthropic-organization-api/)
+- [Anthropic Files API](https://apis.io/apis/anthropic/anthropic-files-api/)
+- [Anthropic Messages API](https://apis.io/apis/anthropic/anthropic-messages-api/)
+- [Anthropic Models API](https://apis.io/apis/anthropic/anthropic-models-api/)
+- [Anthropic Complete API](https://apis.io/apis/anthropic/anthropic-complete-api/)
+- [Anthropic Cost API](https://apis.io/apis/anthropic/anthropic-cost-api/)
+- [Open Anthropic Message Batches API](https://apis.io/collections/anthropic/open-anthropic-message-batches-api/)
+- [Open Anthropic Messages API](https://apis.io/collections/anthropic/open-anthropic-messages-api/)
+- [Open Anthropic Models API](https://apis.io/collections/anthropic/open-anthropic-models-api/)
+- [Postman Anthropic Messages API](https://apis.io/collections/anthropic/postman-anthropic-messages-api/)
+- [Anthropic FinOps](https://apis.io/finops/anthropic/anthropic-finops/)
+- [Anthropic Context](https://apis.io/jsonld/anthropic/anthropic-context/)
+- [Anthropic Plans Pricing](https://apis.io/plans/anthropic/anthropic-plans-pricing/)
+- [Anthropic Rate Limits](https://apis.io/rate-limits/anthropic/anthropic-rate-limits/)
+- [Anthropic JSON Schema Spectral Rules](https://apis.io/rules/anthropic/anthropic-jsonschema-spectral-rules/)
+- [Anthropic Spectral Rules](https://apis.io/rules/anthropic/anthropic-spectral-rules/)
+- [Anthropic Message](https://apis.io/schemas/anthropic/anthropic-message/)
+- [Anthropic Model Info](https://apis.io/schemas/anthropic/anthropic-model-info/)
+- [Anthropic Tool Use](https://apis.io/schemas/anthropic/anthropic-tool-use/)
+- [Anthropic Authentication](https://apis.io/security/anthropic/anthropic-authentication/)
+- [Anthropic Domain Security](https://apis.io/security/anthropic/anthropic-domain-security/)
+- [Anthropic Vulnerability Disclosure](https://apis.io/security/anthropic/anthropic-vulnerability-disclosure/)
+
+## Open an issue
+
+Issues about Anthropic belong on the canonical profile: [open one on api-evangelist/anthropic](https://github.com/api-evangelist/anthropic/issues/new). If you think this merge was a mistake — these were really two companies — say so there or email [info@apievangelist.com](mailto:info@apievangelist.com).
